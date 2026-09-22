@@ -1,0 +1,6 @@
+# robots.txt for Droppfloww Systems
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://droppflowwsystems.com/sitemap.xml
