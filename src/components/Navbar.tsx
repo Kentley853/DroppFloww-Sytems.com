@@ -120,7 +120,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             id="nav-cta-book"
             type="button"
             onClick={() => handlePageClick("schedule-demo", "Schedule a demo")}
-            className="inline-flex items-center justify-center bg-[#617594] hover:bg-[#50637F] text-white text-[14px] xl:text-[15px] font-bold px-5 xl:px-6 py-2.5 rounded-full shadow-[0_3px_12px_rgba(97,117,148,0.25)] hover:shadow-[0_4px_18px_rgba(97,117,148,0.35)] transition-all duration-200 hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#617594] cursor-pointer whitespace-nowrap"
+            className="h-[42px] inline-flex items-center justify-center bg-[#617594] hover:bg-[#50637F] text-white text-[14px] xl:text-[15px] font-bold px-5 xl:px-6 rounded-full shadow-[0_3px_12px_rgba(97,117,148,0.25)] hover:shadow-[0_4px_18px_rgba(97,117,148,0.35)] transition-all duration-200 hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#617594] cursor-pointer whitespace-nowrap"
           >
             <span>{t("nav.scheduleDemo", "Schedule a walkthrough")}</span>
           </button>
@@ -134,12 +134,12 @@ export const Navbar: React.FC<NavbarProps> = ({
             id="mobile-menu-trigger"
             type="button"
             onClick={() => setMobileMenuOpen(true)}
-            className="p-2.5 text-[#0B1728] focus:outline-none rounded-full border border-[#CBDDEB] hover:bg-[#F0F5FA] cursor-pointer"
+            className="w-[40px] h-[40px] flex items-center justify-center text-[#0B1728] focus:outline-none rounded-full border border-[#CBDDEB] bg-white hover:bg-[#F0F5FA] transition-colors cursor-pointer shrink-0"
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-navigation-drawer"
             aria-label="Open navigation menu"
           >
-            <Menu className="w-5 h-5" />
+            <Menu className="w-5 h-5 text-[#617594]" />
           </button>
         </div>
       </div>
