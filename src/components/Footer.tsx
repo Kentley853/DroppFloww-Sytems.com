@@ -1,6 +1,8 @@
 import React from "react";
 import { CONFIG, analytics } from "../config";
 import { DfLogo } from "./DfLogo";
+import { useLanguage } from "../i18n/LanguageContext";
+import { LanguageSelector } from "./LanguageSelector";
 
 interface FooterProps {
   onNavigate?: (page: string) => void;
@@ -15,6 +17,7 @@ export const Footer: React.FC<FooterProps> = ({
   onOpenReviews,
   onToggleVerification,
 }) => {
+  const { t, language } = useLanguage();
   const currentYear = new Date().getFullYear();
 
   const handleLinkClick = (pageId: string, label: string) => {
@@ -25,6 +28,20 @@ export const Footer: React.FC<FooterProps> = ({
       const el = document.getElementById(pageId === "schedule-demo" ? "book-call" : pageId);
       el?.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  const footerMission: Record<string, string> = {
+    en: "We study how your business operates, identify unnecessary manual work, and build custom operational systems around your existing tools.",
+    id: "Kami menganalisis alur bisnis Anda, mengidentifikasi pekerjaan manual yang berulang, dan membangun sistem operasional kustom yang menyatu dengan alat yang sudah ada.",
+    zh: "我们深度调研您的业务运转方式，定位繁重低效的人工作业，围绕您现有的工具链构建高度贴合的定制运营系统。",
+    es: "Analizamos cómo opera su empresa, identificamos el trabajo manual innecesario y construimos sistemas operativos a medida que se integran con sus herramientas actuales.",
+  };
+
+  const honestDeliveryText: Record<string, string> = {
+    en: "Calm operational engineering • Zero fabricated metrics • Transparent technical delivery",
+    id: "Rekayasa operasional terukur • Tanpa klaim palsu • Pengiriman sistem transparan",
+    zh: "沉静务实的运营工程 • 拒绝虚构数据 • 透明确凿的技术交付",
+    es: "Ingeniería operativa pragmática • Cero métricas ficticias • Entrega técnica transparente",
   };
 
   return (
@@ -47,27 +64,32 @@ export const Footer: React.FC<FooterProps> = ({
             </div>
             
             <p className="text-[20px] sm:text-[22px] text-white font-bold mb-3 tracking-tight">
-              {CONFIG.TAGLINE}
+              {t("hero.title", "Do more without hiring more.")}
             </p>
             
-            <p className="text-[16px] sm:text-[17px] text-[#A2B8CE] font-normal max-w-[44ch] leading-relaxed mb-4">
-              We study how your business operates, identify unnecessary manual work, and build custom operational systems around your existing tools.
+            <p className="text-[15px] sm:text-[16px] text-[#A2B8CE] font-normal max-w-[44ch] leading-relaxed mb-6">
+              {footerMission[language] || footerMission.en}
             </p>
+
+            {/* Language Selector in Footer */}
+            <div className="mt-auto pt-2">
+              <LanguageSelector variant="footer" />
+            </div>
           </div>
 
           {/* Links Column 1: Navigation */}
           <div className="md:col-span-3">
             <div className="text-[16px] font-bold text-white tracking-tight mb-5">
-              Pages & Systems
+              {t("footer.navHeading", "Pages & Systems")}
             </div>
-            <ul className="space-y-3.5 text-[16px]">
+            <ul className="space-y-3.5 text-[15px] sm:text-[16px]">
               <li>
                 <button
                   type="button"
                   onClick={() => handleLinkClick("schedule-demo", "schedule_demo")}
-                  className="font-bold text-[#38BDF8] hover:text-white transition-colors focus:outline-none cursor-pointer"
+                  className="font-bold text-[#93C5FD] hover:text-white transition-colors focus:outline-none cursor-pointer"
                 >
-                  Schedule a walkthrough
+                  {t("nav.scheduleDemo", "Schedule a walkthrough")}
                 </button>
               </li>
               <li>
@@ -76,7 +98,7 @@ export const Footer: React.FC<FooterProps> = ({
                   onClick={() => handleLinkClick("what-we-build", "what_we_build")}
                   className="text-[#A2B8CE] hover:text-white font-normal transition-colors focus:outline-none cursor-pointer"
                 >
-                  What we build
+                  {t("nav.whatWeBuild", "What we build")}
                 </button>
               </li>
               <li>
@@ -85,7 +107,7 @@ export const Footer: React.FC<FooterProps> = ({
                   onClick={() => handleLinkClick("how-we-work", "how_we_work")}
                   className="text-[#A2B8CE] hover:text-white font-normal transition-colors focus:outline-none cursor-pointer"
                 >
-                  How we work
+                  {t("nav.howWeWork", "How we work")}
                 </button>
               </li>
               <li>
@@ -94,7 +116,7 @@ export const Footer: React.FC<FooterProps> = ({
                   onClick={() => handleLinkClick("why-droppfloww", "why_droppfloww")}
                   className="text-[#A2B8CE] hover:text-white font-normal transition-colors focus:outline-none cursor-pointer"
                 >
-                  Why Droppfloww
+                  {t("nav.whyDroppfloww", "Why Droppfloww")}
                 </button>
               </li>
               <li>
@@ -103,7 +125,7 @@ export const Footer: React.FC<FooterProps> = ({
                   onClick={() => handleLinkClick("client-reviews", "client_reviews")}
                   className="text-[#A2B8CE] hover:text-white font-normal transition-colors focus:outline-none cursor-pointer"
                 >
-                  Case studies & reviews
+                  {t("nav.clientReviews", "Case studies & reviews")}
                 </button>
               </li>
             </ul>
@@ -112,9 +134,9 @@ export const Footer: React.FC<FooterProps> = ({
           {/* Links Column 2: Direct Contact */}
           <div className="md:col-span-4">
             <div className="text-[16px] font-bold text-white tracking-tight mb-5">
-              Direct Contact
+              {t("footer.directContactHeading", "Direct Contact")}
             </div>
-            <div className="space-y-4 text-[16px]">
+            <div className="space-y-4 text-[15px] sm:text-[16px]">
               <div>
                 <span className="text-[#6484A8] block text-[12px] font-bold uppercase tracking-[0.14em] mb-0.5">Founder & CEO</span>
                 <span className="font-bold text-white">Kentley</span>
@@ -147,7 +169,7 @@ export const Footer: React.FC<FooterProps> = ({
                 onClick={onOpenPrivacy}
                 className="hover:text-white text-[#A2B8CE] transition-colors text-[15px] font-medium cursor-pointer"
               >
-                Privacy Notice
+                {t("footer.privacyNotice", "Privacy Notice")}
               </button>
               <button
                 type="button"
@@ -164,10 +186,10 @@ export const Footer: React.FC<FooterProps> = ({
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[14px] text-[#5D7A9C] font-normal">
           <p>
-            © {currentYear} Droppfloww Systems. All rights reserved.
+            © {currentYear} Droppfloww Systems. {t("footer.rights", "All rights reserved.")}
           </p>
           <p className="text-[13px] text-[#465E7A]">
-            Calm operational software consulting • No fabricated testimonials • Honest delivery
+            {honestDeliveryText[language] || honestDeliveryText.en}
           </p>
         </div>
 
@@ -175,3 +197,4 @@ export const Footer: React.FC<FooterProps> = ({
     </footer>
   );
 };
+

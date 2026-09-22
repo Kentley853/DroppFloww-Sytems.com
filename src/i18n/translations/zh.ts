@@ -1,0 +1,192 @@
+export const zh = {
+  // Navigation
+  nav: {
+    overview: "概览",
+    whatWeBuild: "解决方案",
+    howWeWork: "合作流程",
+    whyDroppfloww: "为什么选择我们",
+    clientReviews: "客户案例与评价",
+    scheduleDemo: "预约系统演示",
+    directFounder: "直接对接创始人",
+    privacy: "隐私政策",
+    menu: "菜单",
+    close: "关闭",
+    language: "语言",
+  },
+
+  // Hero
+  hero: {
+    badge: "Droppfloww Systems • 定制运营工程系统",
+    title: "无需扩招，成就更多。",
+    subtitleLead: "我们准确定位您业务流程中流失时间的环节，量身打造工程系统，将其",
+    subtitleHighlight: "彻底消除。",
+    body: "Droppfloww Systems 紧密贴合您现有的业务运转模式构建定制运营软件——打通分散割裂的工具，消除繁琐重复的机械录入，让关键决策牢牢掌握在专业团队手中。",
+    primaryCta: "预约系统演示",
+    secondaryCta: "查看我们构建的系统",
+    liveIndicator: "实时交互式运营架构",
+    trustedBy: "专为成长型专业服务、外勤调度及复杂工作流企业打造",
+  },
+
+  // Problem Section
+  problem: {
+    badge: "现实运营痛点",
+    headlineMain: "告别机械重复。",
+    headlineSub: "聚焦核心价值。",
+    lead: "在不同表格间反复复制粘贴信息、漫无目的地查找最新版图纸文件、跟进本该昨天就通过的审批……这些琐碎杂务悄无声息地吞噬了团队每周的大半工作时间。",
+    callout: "我们就从这里切入。",
+    item1Num: "痛点 01",
+    item1Title: "整个业务全靠电子表格支撑",
+    item1Desc: "电子表格虽然灵活，但缺乏防错与权限保护。公式极易损坏，重复冗余文件到处飞，公司关键的运营历史分散在个人网盘中。",
+    item1Impact: "后果：数据分歧风险极高，每周需耗费数十小时人工对账排查。",
+    item2Num: "痛点 02",
+    item2Title: "跨部门交接遗漏关键细节",
+    item2Desc: "从销售交接到运营、或从办公室指派到外勤人员，往往依赖个人记忆或杂乱的即时通讯聊天记录，客户的关键要求屡屡漏单。",
+    item2Impact: "后果：交付延误、客户不满以及内部员工的持续消耗与疲惫。",
+    item3Num: "痛点 03",
+    item3Title: "整理一份经营报表需耗费数天",
+    item3Desc: "当管理层需要了解项目利润率、外勤人员负荷或订单转化漏斗时，团队必须手动从多个系统导出并手工拼凑报表。",
+    item3Impact: "后果：战略决策严重滞后，管理团队在缺乏实时数据的情况下盲目摸索。",
+  },
+
+  // What We Build
+  whatWeBuild: {
+    badge: "定制运营架构",
+    title: "完全贴合您真实工作方式的运营系统",
+    subtitle: "我们绝不强行推销臃肿僵硬的标准化现成软件。我们为您的特定业务流深度量身定制轻量、稳健、高效的运营中枢。",
+    cat1Title: "项目与业务综合指挥中枢",
+    cat1Desc: "统一可视化监控正在进行的项目、里程碑节点、团队排班、外勤指派及预算消耗，全数据在统一界面实时同步。",
+    cat2Title: "内部协同与工作流自动化引擎",
+    cat2Desc: "定制审批流、自动任务流转、文档智能生成与即时提醒，无需人工反复催促，业务自然高效向前推进。",
+    cat3Title: "客户专属自助服务门户",
+    cat3Desc: "专属企业品牌风格的直观门户，客户可随时随地查看交付进度、核对账单发票、确认服务节点并上传必要凭证文件。",
+    cat4Title: "外勤派单与现场协同调度系统",
+    cat4Desc: "针对移动端深度优化的派单看板、现场照片水印核验、精准时间戳完工记录，现场与办公室实时无缝数据互通。",
+    ctaExplore: "探索完整系统架构细节",
+    ctaConsult: "预约系统架构评估会议",
+  },
+
+  // How We Work
+  howWeWork: {
+    badge: "严谨务实的工程模式",
+    title: "4个清晰阶段，每一步均交付确凿成果。",
+    subtitle: "我们不搞旷日持久的空洞咨询，也不开虚幻的路线图空头支票。每个阶段都有可运行的真实代码与明确的效率提升证明。",
+    stage1Num: "01",
+    stage1Name: "业务现状深度调研",
+    stage1Desc: "全景测绘您现有的操作流程，实地观摩关键岗位工作流，精确锁定吞噬团队时间的瓶颈所在。",
+    stage1Deliverable: "流程可视化测绘图 & 系统架构蓝图",
+    stage2Num: "02",
+    stage2Name: "原型构建与可行性验证",
+    stage2Desc: "在10个工作日内迅速构建一套高保真可用原型，使用您的真实业务数据与关键操作人员协同测试打磨。",
+    stage2Deliverable: "可交互系统原型 & 数据库模型架构",
+    stage3Num: "03",
+    stage3Name: "生产级全栈工程开发",
+    stage3Desc: "搭建完备的全栈生产系统，包含严密的角色权限隔离、毫秒级实时数据同步及高容错自动化流转机制。",
+    stage3Deliverable: "完整上线的生产级系统 & 全套系统集成",
+    stage4Num: "04",
+    stage4Name: "全员培训与100%所有权移交",
+    stage4Desc: "全程带教您的团队，上线期间提供现场保障，交付100%完整的源代码与知识产权，绝无任何软件商捆绑套牢。",
+    stage4Deliverable: "实操视频教程、技术文档及源代码100%所有权",
+    ctaStart: "从第一步开始启动",
+  },
+
+  // Why Droppfloww
+  whyDroppfloww: {
+    badge: "Droppfloww 核心优势",
+    title: "立足您的企业现实，拒绝软件商捆绑陷阱",
+    subtitle: "为何富有远见的服务与运营企业坚决选择定制工程系统，而不是月月被套牢、永远别扭的通用 SaaS 订阅软件。",
+    pillar1Title: "创始人兼首席架构师亲自操刀",
+    pillar1Desc: "没有层层传话的客户经理，绝无实习生经手。您将全程与创始人兼系统首席架构师 Kentley 面对面深度合作。",
+    pillar2Title: "零按人头收费的月租陷阱",
+    pillar2Desc: "您拥有系统的绝对所有权。无论是 5 人还是 500 人团队使用，都无需再按月缴纳苛刻的坐席软件税。",
+    pillar3Title: "100% 贴合您独有的业务逻辑",
+    pillar3Desc: "系统中的每一个字段、每一道工序状态和每项自动化逻辑，均完全按照您的高效模式定制，绝非削足适履。",
+    comparisonMetric: "核心指标对比",
+    droppflowwCol: "Droppfloww Systems",
+    genericCol: "通用 SaaS (ClickUp/Airtable)",
+    agencyCol: "传统外包开发机构",
+    ctaFounder: "直接与创始人交流",
+  },
+
+  // Client Reviews
+  reviews: {
+    badge: "已验证的真实客户案例",
+    title: "真实的业务蜕变，可量化的经营成果。",
+    subtitle: "探索各行业专业服务商与现场作业企业如何每月节省数百小时繁琐人工工时。",
+    verifiedBadge: "真实合作客户验证",
+    timelineLabel: "交付周期",
+    metricLabel: "量化成效",
+    viewCaseStudy: "查看案例详情",
+    ctaReview: "预约业务运营梳理",
+  },
+
+  // Booking & Schedule
+  booking: {
+    badge: "直接对接创始人",
+    title: "预约 30 分钟运营系统架构演示",
+    subtitle: "向我们简要介绍您业务中的重复瓶颈。Kentley 将为您梳理一套量身设计的运营技术方案并免费评估可行性。",
+    selectPlatform: "1. 选择会议方式",
+    selectDate: "2. 选择日期",
+    selectTime: "3. 选择时间（已根据您的本地时区转换）",
+    topicLabel: "您最希望改善哪项具体的运营流程？（选填）",
+    topicPlaceholder: "例如：打通报价单到现场派工单、自动汇总每周财务进度、自动化管理 WhatsApp 订单流...",
+    nameLabel: "您的姓名",
+    emailLabel: "工作邮箱",
+    companyLabel: "公司 / 机构名称",
+    phoneLabel: "联系电话 / WhatsApp（选填）",
+    submitBtn: "确认并预约演示",
+    submitting: "正在为您锁定日程...",
+    successTitle: "预约已成功确认！",
+    successMsg: "日历邀请函与在线会议链接已发送至您的邮箱。我们期待与您深入交流并分析优化您的运营体系。",
+    whatsappAlternative: "习惯使用 WhatsApp 直接沟通？",
+    chatOnWhatsapp: "直接在 WhatsApp 上联系我们",
+    availableSlots: "个可用时间段",
+    noSlots: "该日期已全部约满，请选择其他日期。",
+  },
+
+  // Contact Section
+  contact: {
+    badge: "方案可行性评估与定制",
+    title: "告诉我们您的运营瓶颈",
+    subtitle: "心中已有明确的自动化或系统构想？请在下方提交您的痛点细节。Kentley 将在 24 小时内亲自审阅并给予专业评估。",
+    nameLabel: "您的姓名",
+    emailLabel: "工作邮箱",
+    companyLabel: "公司名称",
+    serviceLabel: "核心业务方向",
+    detailsLabel: "请描述正在大量消耗团队时间的重复任务或阻塞环节",
+    detailsPlaceholder: "例如：人工重新录入外包图纸数据、在群聊中混乱派单、手工对账核算发票...",
+    submitBtn: "提交可行性评估需求",
+    submitting: "正在提交...",
+    successTitle: "需求已成功送达",
+    successMsg: "非常感谢您分享您的业务流程细节。Kentley 将亲自研判可行性并在 24 小时内直接与您取得联系。",
+    directEmailLabel: "创始人直接邮箱",
+    whatsappLabel: "WhatsApp 直通号",
+  },
+
+  // FAQ
+  faq: {
+    badge: "常见问题解答",
+    title: "关于与我们合作，您想了解的一切",
+    subtitle: "关于交付周期、收费模式、知识产权归属以及现有技术集成的清晰解答。",
+  },
+
+  // Footer
+  footer: {
+    tagline: "专为企业真实高效运转而生的定制运营工程软件。",
+    navHeading: "网站导航",
+    systemsHeading: "系统架构方案",
+    directContactHeading: "直接联系方式",
+    rights: "版权所有。Droppfloww Systems。",
+    privacyNotice: "隐私政策",
+    switchLanguage: "切换语言：",
+  },
+
+  // Common UI
+  common: {
+    loading: "加载中...",
+    close: "关闭",
+    back: "返回",
+    learnMore: "了解更多",
+    getStarted: "即刻启程",
+    viewAll: "查看全部",
+  },
+};

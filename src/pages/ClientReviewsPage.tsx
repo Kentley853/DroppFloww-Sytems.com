@@ -1,158 +1,160 @@
-import React, { useState } from "react";
-import { ArrowRight, CheckCircle2, Building2, TrendingUp, Clock, ShieldCheck, Quote, ChevronRight } from "lucide-react";
+import React, { useState, useMemo } from "react";
+import { ArrowRight, CheckCircle2, Building2, ShieldCheck, Quote, ChevronRight } from "lucide-react";
 import { analytics } from "../config";
+import { useLanguage } from "../i18n/LanguageContext";
+import { getCaseStudies, CaseStudy } from "../data/caseStudiesData";
 
 interface ClientReviewsPageProps {
   onNavigate: (page: string) => void;
 }
 
-interface CaseStudy {
-  id: string;
-  client: string;
-  industry: string;
-  location: string;
-  headline: string;
-  metricHero: string;
-  metricLabel: string;
-  problem: string;
-  problemDetails: string[];
-  systemBuilt: string;
-  systemArchitecture: string[];
-  outcome: string;
-  outcomeStats: { label: string; value: string }[];
-  quote: {
-    text: string;
-    author: string;
-    role: string;
-  };
-  imageSrc: string;
-  imageAlt: string;
-  tags: string[];
-}
-
-const CASE_STUDIES: CaseStudy[] = [
-  {
-    id: "bestindo-logistics",
-    client: "PT Bestindo Central Logistics",
-    industry: "Inter-island Freight & Cold-Chain Logistics",
-    location: "Jakarta & Surabaya, Indonesia",
-    headline: "Eliminating 32 weekly hours of manual dispatch re-entry across 140 commercial transport units.",
-    metricHero: "82% Reduction",
-    metricLabel: "In clerical data re-entry and dispatch turnaround latency",
-    problem:
-      "Fourteen operational dispatchers spent their morning shifts re-entering manifest orders manually from legacy AS400 terminal reports into WhatsApp driver broadcast groups, driver trip sheets, and spreadsheets. When road delays or port congestion occurred, updates were lost in message chains, causing missed delivery windows, billing discrepancies, and driver overtime disputes.",
-    problemDetails: [
-      "Fragmented communication across 40+ unmonitored messaging chats.",
-      "Driver trip manifests were physically re-keyed 3 times before invoicing.",
-      "Average invoice dispute lag exceeded 18 days per logistics cycle.",
-    ],
-    systemBuilt:
-      "Droppfloww designed and engineered a unified Dispatch Orchestration Hub that interfaces directly with Bestindo's legacy transport ERP via custom server adapters. Waybills are parsed automatically, assigned to route optimization queues, and delivered directly to drivers through a lightweight web interface with one-tap status confirmation and GPS timestamping.",
-    systemArchitecture: [
-      "Automated AS400 database polling connector with schema normalization.",
-      "Real-time driver dispatch mobile console with low-bandwidth offline caching.",
-      "Two-way exception alert engine triggering dispatch supervisor intervention.",
-      "Automated proof-of-delivery (POD) receipt reconciliation linked to customer invoicing.",
-    ],
-    outcome:
-      "Dispatch preparation dropped from 4.5 hours to 18 minutes per shift. Invoice reconciliation time decreased from 18 days to 48 hours. Bestindo grew its active operational fleet by 24% without hiring a single additional clerical employee.",
-    outcomeStats: [
-      { label: "Daily Dispatch Time", value: "18 mins (was 4.5 hrs)" },
-      { label: "Monthly Overtime Saved", value: "$14,200 / mo" },
-      { label: "First-Month Error Rate", value: "0.02% (down from 7.4%)" },
-    ],
-    quote: {
-      text: "Droppfloww did not try to sell us a bloated 500-page ERP or tell us to change how our warehouse works. They spent three days observing our dispatch floor, understood our real bottlenecks, and built a tailored tool our team adopted within 48 hours. We scaled from 110 to 140 trucks without adding overhead.",
-      author: "Hendra Wijaya",
-      role: "Head of Fleet Operations, PT Bestindo Central",
-    },
-    imageSrc: "/src/assets/images/logistics_system_1789312508098.jpg",
-    imageAlt: "Droppfloww Dispatch & Logistics Operating Console for PT Bestindo",
-    tags: ["Custom Dispatch Engine", "Legacy ERP Connector", "Real-Time Tracking", "Automated POD"],
-  },
-  {
-    id: "apex-civil",
-    client: "Apex Civil Infrastructure",
-    industry: "Heavy Civil Contracting & Structural Engineering",
-    location: "Singapore & Johor Bahru",
-    headline: "Automating tender drawing specification extraction and Bill of Quantities reconciliation.",
-    metricHero: "6.2x Faster",
-    metricLabel: "Tender estimation turnaround from 21 days down to 3.5 days",
-    problem:
-      "Senior structural estimators spent hundreds of hours manually auditing 500+ CAD drawing sets and municipal specification annexes to construct itemized Bill of Quantities (BOQs). Inevitable transposition mistakes and overlooked line items led to either uncompetitive bid margins or costly project under-pricing.",
-    problemDetails: [
-      "Each tender required 3 senior engineers working 80 hours solely on document cross-referencing.",
-      "Supplier pricing catalogs were updated weekly across 12 discordant Excel files.",
-      "Bidding errors on a single municipal project could jeopardize $240K+ in projected margins.",
-    ],
-    systemBuilt:
-      "Droppfloww built a high-precision Engineering Specification Extraction & Costing Console. The platform ingests architectural CAD sets, PDF schedules, and structural annexes, extracting geometry and rebar specifications, standardizing line items against live supplier price indices, and surfacing potential margin risks before submission.",
-    systemArchitecture: [
-      "Intelligent CAD & drawing specification parser extracting dimensional line items.",
-      "Automated material cross-referencer matching specifications to live steel/concrete supplier lists.",
-      "Deterministic margin variance calculator highlighting discrepancies beyond 2.5% tolerance.",
-      "One-click audit trail report generating defensible engineering tender breakdowns.",
-    ],
-    outcome:
-      "Tender response time was slashed from 3 weeks to 3.5 business days. The estimation team was able to participate in 4x more municipal bids per quarter with higher confidence in margin defensibility.",
-    outcomeStats: [
-      { label: "Tender Turnaround", value: "3.5 days (was 21 days)" },
-      { label: "Bid Volume Capacity", value: "+380% Year-over-Year" },
-      { label: "Specification Accuracy", value: "99.98% verified" },
-    ],
-    quote: {
-      text: "Other software vendors showed us generic construction SaaS tools that didn't understand rebar density or our regional supplier nuances. Droppfloww built a custom engine mapped to how our estimators think. It paid for itself on our very first highway bridge tender.",
-      author: "Marcus Chen, P.E.",
-      role: "Managing Principal, Apex Civil Infrastructure",
-    },
-    imageSrc: "/src/assets/images/engineering_specs_1789312528199.jpg",
-    imageAlt: "Engineering Specification and BOQ Calculation Console built by Droppfloww",
-    tags: ["Drawing Spec Parser", "BOQ Calculator", "Price Index Sync", "Audit Trail Engine"],
-  },
-  {
-    id: "lumina-health",
-    client: "Lumina Specialty Health Group",
-    industry: "Multi-Clinic Diagnostic & Surgical Centers",
-    location: "Kuala Lumpur, Malaysia",
-    headline: "Automated insurance pre-authorization validation across 6 surgical facilities.",
-    metricHero: "96.4% Acceptance",
-    metricLabel: "First-pass clinical insurance claim acceptance rate",
-    problem:
-      "Front-desk patient coordinators and billing staff struggled with frequent insurance rejections due to mismatched diagnostic ICD codes, missing physician clinical notes, and insurer-specific approval guidelines. This created stressful delays for surgical patients and a $1.8M rolling accounts receivable backlog.",
-    problemDetails: [
-      "Over 22% of preliminary surgical pre-authorizations initially rejected or queried.",
-      "Staff spent 35+ hours each week on hold with private insurance adjudicators.",
-      "Patient check-in delays created severe waiting room friction on surgery days.",
-    ],
-    systemBuilt:
-      "Droppfloww engineered a centralized Pre-Authorization & Clinical Compliance Engine that integrates clinical scheduling with regional insurer policy matrices. The system validates documentation completeness prior to submission and alerts clinic managers of missing diagnostic attachments in real time.",
-    systemArchitecture: [
-      "HL7 and REST API synchronization with clinical management and EHR systems.",
-      "Automated rule-based pre-authorization completeness checker.",
-      "Direct insurer portal submission connector with automated status polling.",
-      "Patient communication service providing transparent cost estimates via SMS/Email.",
-    ],
-    outcome:
-      "First-pass claim acceptance rose from 78% to 96.4%. Accounts receivable lag fell from 44 days to 11 days, freeing up clinic coordinators to focus entirely on patient care rather than administrative chasing.",
-    outcomeStats: [
-      { label: "First-Pass Approval", value: "96.4% (was 78%)" },
-      { label: "A/R Aging Lag", value: "11 days (was 44 days)" },
-      { label: "Weekly Admin Hours", value: "-40 hrs per clinic" },
-    ],
-    quote: {
-      text: "Droppfloww brought the engineering discipline of high-reliability systems to our patient administration. The clarity of their work was unmatched—we now have full visibility from diagnosis to reimbursement.",
-      author: "Dr. Soraya Al-Hadi",
-      role: "Chief Operating Officer, Lumina Health Group",
-    },
-    imageSrc: "/src/assets/images/operations_hub_1789312544601.jpg",
-    imageAlt: "Centralized Clinical Pre-Authorization and Records Hub built by Droppfloww",
-    tags: ["Clinical Compliance", "Insurer API Connector", "EHR Sync", "Audit Pipeline"],
-  },
-];
-
 export const ClientReviewsPage: React.FC<ClientReviewsPageProps> = ({ onNavigate }) => {
-  const [activeCase, setActiveCase] = useState<string>(CASE_STUDIES[0].id);
-  const currentCase = CASE_STUDIES.find((c) => c.id === activeCase) || CASE_STUDIES[0];
+  const { language } = useLanguage();
+  const caseStudies = useMemo(() => getCaseStudies(language), [language]);
+
+  const [activeCase, setActiveCase] = useState<string>("bestindo-logistics");
+  const currentCase = caseStudies.find((c) => c.id === activeCase) || caseStudies[0];
+
+  const uiText = useMemo(() => {
+    const map: Record<
+      string,
+      {
+        heroBadge: string;
+        heroTitle: string;
+        heroDesc: string;
+        heroCta1: string;
+        heroCta2: string;
+        engagementsLabel: string;
+        verifiedBadge: string;
+        primaryMetric: string;
+        consoleDeployment: string;
+        consoleBuiltBy: string;
+        requestWalkthrough: string;
+        step1Num: string;
+        step1Title: string;
+        step1Details: string;
+        step2Num: string;
+        step2Title: string;
+        step2Details: string;
+        step3Num: string;
+        step3Title: string;
+        bottomHeading: string;
+        bottomDesc: string;
+        bottomCta1: string;
+        bottomCta2: string;
+      }
+    > = {
+      en: {
+        heroBadge: "Proven Operational Outcomes",
+        heroTitle: "Real companies. Real systems. Measurable impact.",
+        heroDesc:
+          "We do not publish hypothetical case studies or vanity metrics. Every system documented below was engineered for a specific enterprise client, integrated with their existing tools, and measured by the hours and capital it saved.",
+        heroCta1: "Discuss your operational bottlenecks",
+        heroCta2: "See our consulting methodology",
+        engagementsLabel: "Selected Engagements:",
+        verifiedBadge: "Verified Client Engagements",
+        primaryMetric: "Primary Operational Outcome",
+        consoleDeployment: "Custom Engineering Production Deployment",
+        consoleBuiltBy: "Built, deployed, and maintained exclusively by Droppfloww Systems.",
+        requestWalkthrough: "Request a walkthrough of this architecture",
+        step1Num: "01",
+        step1Title: "The Operational Bottleneck",
+        step1Details: "Critical Pain Points:",
+        step2Num: "02",
+        step2Title: "What Droppfloww Engineered",
+        step2Details: "Technical Architecture:",
+        step3Num: "03",
+        step3Title: "Measurable Business Impact",
+        bottomHeading: "Have a similar operational bottleneck?",
+        bottomDesc:
+          "We will review your workflows, analyze your existing tools, and outline what a custom system would look like for your business.",
+        bottomCta1: "Schedule an operational review with Kentley",
+        bottomCta2: "Explore all system architectures",
+      },
+      id: {
+        heroBadge: "Hasil Operasional Nyata",
+        heroTitle: "Perusahaan nyata. Sistem nyata. Dampak terukur.",
+        heroDesc:
+          "Kami tidak mempublikasikan studi kasus hipotetis atau klaim kosong. Setiap sistem di bawah dirancang untuk klien nyata, dihubungkan ke alur kerja mereka, dan diukur dari jam kerja serta efisiensi modal yang berhasil dihemat.",
+        heroCta1: "Konsultasikan kendala operasional Anda",
+        heroCta2: "Pelajari metodologi kerja kami",
+        engagementsLabel: "Klien Pilihan:",
+        verifiedBadge: "Proyek Klien Terverifikasi",
+        primaryMetric: "Hasil Operasional Utama",
+        consoleDeployment: "Implementasi Produksi Rekayasa Kustom",
+        consoleBuiltBy: "Dibangun, di-deploy, dan dikelola langsung oleh Droppfloww Systems.",
+        requestWalkthrough: "Minta tinjauan arsitektur sistem ini",
+        step1Num: "01",
+        step1Title: "Kendala & Hambatan Operasional",
+        step1Details: "Titik Kritis Masalah:",
+        step2Num: "02",
+        step2Title: "Solusi Rekayasa Droppfloww",
+        step2Details: "Arsitektur Teknis:",
+        step3Num: "03",
+        step3Title: "Dampak Bisnis Terukur",
+        bottomHeading: "Menghadapi hambatan operasional serupa?",
+        bottomDesc:
+          "Kami akan menganalisis alur kerja Anda, memetakan sistem yang ada, dan merancang perangkat lunak kustom yang presisi untuk kebutuhan bisnis Anda.",
+        bottomCta1: "Jadwalkan review alur kerja bersama Kentley",
+        bottomCta2: "Jelajahi seluruh arsitektur sistem",
+      },
+      zh: {
+        heroBadge: "真实业务成效验证",
+        heroTitle: "真实企业。实装系统。可衡量的降本增效。",
+        heroDesc:
+          "我们从不发布假设性的概念案例或空洞的公关数据。下列每个系统均针对特定企业的重度卡点定向研发，无缝融入客户既有工具栈，并由其省下的实际工时与真金白银严格核验。",
+        heroCta1: "与创始人探讨您的业务瓶颈",
+        heroCta2: "了解我们的咨询研发方法论",
+        engagementsLabel: "精选交付案例：",
+        verifiedBadge: "实体验收投产工程",
+        primaryMetric: "核心业务成效指标",
+        consoleDeployment: "生产环境定制工程实装部署",
+        consoleBuiltBy: "由 Droppfloww Systems 独立研发、部署与长效维护。",
+        requestWalkthrough: "申请在线拆解此系统技术架构",
+        step1Num: "01",
+        step1Title: "核心业务瓶颈与痛点",
+        step1Details: "关键阻碍清单：",
+        step2Num: "02",
+        step2Title: "Droppfloww 交付的技术方案",
+        step2Details: "底层工程架构：",
+        step3Num: "03",
+        step3Title: "可衡量的商业落地回报",
+        bottomHeading: "您的企业也有类似的流程卡点？",
+        bottomDesc:
+          "我们将深入梳理您的业务流程，拆解既有系统的阻滞点，为您量身构思最简练可靠的专属定制软件蓝图。",
+        bottomCta1: "预约 Kentley 进行 30 分钟流程诊断",
+        bottomCta2: "探索所有系统架构范例",
+      },
+      es: {
+        heroBadge: "Resultados Operativos Reales",
+        heroTitle: "Empresas reales. Sistemas reales. Impacto medible.",
+        heroDesc:
+          "No publicamos casos hipotéticos ni métricas vacías. Cada sistema documentado fue desarrollado para un cliente específico, integrado con sus herramientas actuales y medido por las horas y el capital ahorrado.",
+        heroCta1: "Analizar los cuellos de botella de su empresa",
+        heroCta2: "Conocer nuestra metodología de consultoría",
+        engagementsLabel: "Proyectos Seleccionados:",
+        verifiedBadge: "Proyectos de Clientes Verificados",
+        primaryMetric: "Resultado Operativo Principal",
+        consoleDeployment: "Implementación en Producción a Medida",
+        consoleBuiltBy: "Desarrollado, implementado y mantenido por Droppfloww Systems.",
+        requestWalkthrough: "Solicitar una demostración de esta arquitectura",
+        step1Num: "01",
+        step1Title: "El Cuello de Botella Operativo",
+        step1Details: "Puntos Críticos de Fricción:",
+        step2Num: "02",
+        step2Title: "Lo que Droppfloww Desarrolló",
+        step2Details: "Arquitectura Técnica:",
+        step3Num: "03",
+        step3Title: "Impacto Empresarial Medible",
+        bottomHeading: "¿Enfrenta un cuello de botella similar?",
+        bottomDesc:
+          "Revisaremos sus flujos de trabajo, analizaremos sus herramientas actuales y diseñaremos el sistema a medida ideal para su organización.",
+        bottomCta1: "Agendar una sesión con Kentley",
+        bottomCta2: "Explorar todas las arquitecturas",
+      },
+    };
+    return map[language] || map.en;
+  }, [language]);
 
   return (
     <div className="min-h-screen bg-[#F8FAFD] text-[#0B1728] selection:bg-[#EAF2F8] selection:text-[#0B1728]">
@@ -163,23 +165,23 @@ export const ClientReviewsPage: React.FC<ClientReviewsPageProps> = ({ onNavigate
           className="absolute inset-0 pointer-events-none opacity-30"
           style={{
             background:
-              "radial-gradient(ellipse at 70% 10%, rgba(62, 95, 130, 0.45) 0%, transparent 65%), radial-gradient(ellipse at 20% 90%, rgba(141, 184, 224, 0.15) 0%, transparent 50%)",
+              "radial-gradient(ellipse at 70% 10%, rgba(97, 117, 148, 0.45) 0%, transparent 65%), radial-gradient(ellipse at 20% 90%, rgba(231, 237, 245, 0.15) 0%, transparent 50%)",
           }}
         />
 
         <div className="max-w-[1360px] mx-auto px-6 md:px-12 relative z-10">
           <div className="max-w-[880px]">
             <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#0E1D31] border border-[#1B2F4A] text-[#93C5FD] text-[12px] sm:text-[13px] font-bold tracking-[0.14em] uppercase mb-8">
-              <span className="w-2 h-2 rounded-full bg-[#38BDF8]" />
-              <span>Proven Operational Outcomes</span>
+              <span className="w-2 h-2 rounded-full bg-[#617594]" />
+              <span>{uiText.heroBadge}</span>
             </div>
 
             <h1 className="text-[44px] sm:text-[64px] md:text-[80px] font-extrabold text-white tracking-[-0.035em] leading-[0.98] mb-8">
-              Real companies. Real systems. Measurable impact.
+              {uiText.heroTitle}
             </h1>
 
             <p className="text-[19px] sm:text-[21px] md:text-[22px] leading-[1.7] text-[#CBDDEB] font-normal max-w-[68ch] mb-10">
-              We do not publish hypothetical case studies or vanity metrics. Every system documented below was engineered for a specific enterprise client, integrated with their existing tools, and measured by the hours and capital it saved.
+              {uiText.heroDesc}
             </p>
 
             <div className="flex flex-wrap items-center gap-4">
@@ -188,7 +190,7 @@ export const ClientReviewsPage: React.FC<ClientReviewsPageProps> = ({ onNavigate
                 onClick={() => onNavigate("schedule-demo")}
                 className="inline-flex items-center justify-center bg-[#617594] hover:bg-[#50637F] text-white text-[16px] font-bold px-8 py-4 rounded-full transition-all duration-200 shadow-[0_4px_16px_rgba(97,117,148,0.3)] hover:shadow-[0_6px_22px_rgba(97,117,148,0.4)] cursor-pointer"
               >
-                <span>Discuss your operational bottlenecks</span>
+                <span>{uiText.heroCta1}</span>
                 <ArrowRight className="w-4.5 h-4.5 ml-2" />
               </button>
 
@@ -197,7 +199,7 @@ export const ClientReviewsPage: React.FC<ClientReviewsPageProps> = ({ onNavigate
                 onClick={() => onNavigate("how-we-work")}
                 className="inline-flex items-center justify-center bg-[#0E1D31] hover:bg-[#152943] text-white text-[16px] font-semibold px-7 py-4 rounded-full border border-[#1B2F4A] transition-all cursor-pointer"
               >
-                <span>See our consulting methodology</span>
+                <span>{uiText.heroCta2}</span>
               </button>
             </div>
           </div>
@@ -209,9 +211,9 @@ export const ClientReviewsPage: React.FC<ClientReviewsPageProps> = ({ onNavigate
         <div className="max-w-[1360px] mx-auto px-6 md:px-12 flex items-center justify-between gap-4 overflow-x-auto scrollbar-none">
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <span className="text-[12px] font-bold text-[#62768D] uppercase tracking-wider mr-2 hidden lg:inline">
-              Selected Engagements:
+              {uiText.engagementsLabel}
             </span>
-            {CASE_STUDIES.map((cs) => {
+            {caseStudies.map((cs) => {
               const isSelected = cs.id === activeCase;
               return (
                 <button
@@ -235,7 +237,7 @@ export const ClientReviewsPage: React.FC<ClientReviewsPageProps> = ({ onNavigate
 
           <div className="text-[13px] text-[#52667A] font-medium hidden md:flex items-center gap-2 shrink-0">
             <ShieldCheck className="w-4 h-4 text-[#617594]" />
-            <span>Verified Client Engagements</span>
+            <span>{uiText.verifiedBadge}</span>
           </div>
         </div>
       </section>
@@ -243,11 +245,9 @@ export const ClientReviewsPage: React.FC<ClientReviewsPageProps> = ({ onNavigate
       {/* Active Immersive Story Presentation */}
       <main className="py-16 md:py-28">
         <div className="max-w-[1360px] mx-auto px-6 md:px-12">
-          
           {/* Client Header Card */}
           <div className="bg-white rounded-3xl p-8 sm:p-12 md:p-16 border border-[#CBDDEB] shadow-sm mb-16">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-              
               <div className="lg:col-span-8">
                 <div className="flex flex-wrap items-center gap-3 text-[13px] text-[#4A6585] font-semibold mb-4">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E7EDF5] text-[#617594] font-bold">
@@ -277,8 +277,8 @@ export const ClientReviewsPage: React.FC<ClientReviewsPageProps> = ({ onNavigate
               {/* Dominant Hero Metric */}
               <div className="lg:col-span-4 bg-[#0B1728] text-white rounded-2xl p-8 flex flex-col justify-between border border-[#1B2F4A]">
                 <div>
-                  <div className="text-[12px] font-bold tracking-[0.16em] uppercase text-[#38BDF8] mb-2">
-                    Primary Operational Outcome
+                  <div className="text-[12px] font-bold tracking-[0.16em] uppercase text-[#617594] mb-2">
+                    {uiText.primaryMetric}
                   </div>
                   <div className="text-[44px] sm:text-[54px] font-extrabold text-white tracking-tight leading-none mb-3">
                     {currentCase.metricHero}
@@ -297,7 +297,6 @@ export const ClientReviewsPage: React.FC<ClientReviewsPageProps> = ({ onNavigate
                   ))}
                 </div>
               </div>
-
             </div>
           </div>
 
@@ -315,7 +314,7 @@ export const ClientReviewsPage: React.FC<ClientReviewsPageProps> = ({ onNavigate
                   </span>
                 </div>
                 <div className="text-[12px] text-[#8DB8E0] font-semibold">
-                  Custom Engineering Production Deployment
+                  {uiText.consoleDeployment}
                 </div>
               </div>
 
@@ -336,7 +335,7 @@ export const ClientReviewsPage: React.FC<ClientReviewsPageProps> = ({ onNavigate
                     {currentCase.imageAlt}
                   </p>
                   <p className="text-[13px] text-[#475A70] font-normal mt-0.5">
-                    Built, deployed, and maintained exclusively by Droppfloww Systems.
+                    {uiText.consoleBuiltBy}
                   </p>
                 </div>
                 <button
@@ -344,7 +343,7 @@ export const ClientReviewsPage: React.FC<ClientReviewsPageProps> = ({ onNavigate
                   onClick={() => onNavigate("schedule-demo")}
                   className="inline-flex items-center gap-2 text-[14px] font-bold text-[#617594] hover:text-[#50637F] bg-[#E7EDF5] hover:bg-[#D9E9FD] px-5 py-2.5 rounded-full transition-all cursor-pointer"
                 >
-                  <span>Request a walkthrough of this architecture</span>
+                  <span>{uiText.requestWalkthrough}</span>
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
@@ -353,21 +352,20 @@ export const ClientReviewsPage: React.FC<ClientReviewsPageProps> = ({ onNavigate
 
           {/* Three-Column Story Structure: Problem, System Built, Outcome */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-            
             {/* 1. The Operational Problem */}
             <div className="bg-white rounded-3xl p-8 sm:p-10 border border-[#CBDDEB] shadow-sm">
               <div className="w-10 h-10 rounded-2xl bg-[#F0F5FA] border border-[#CBDDEB] flex items-center justify-center text-[#3B5B7D] font-bold text-[15px] mb-6">
-                01
+                {uiText.step1Num}
               </div>
               <h3 className="text-[24px] font-extrabold text-[#0B1728] mb-4">
-                The Operational Bottleneck
+                {uiText.step1Title}
               </h3>
               <p className="text-[16px] sm:text-[17px] leading-[1.75] text-[#2A3F5B] font-normal mb-6">
                 {currentCase.problem}
               </p>
               <div className="pt-4 border-t border-[#EAF2F8] space-y-2.5">
                 <div className="text-[13px] font-bold tracking-wider uppercase text-[#3B5B7D]">
-                  Critical Pain Points:
+                  {uiText.step1Details}
                 </div>
                 {currentCase.problemDetails.map((detail, idx) => (
                   <div key={idx} className="flex items-start gap-2.5 text-[15px] text-[#475A70]">
@@ -381,17 +379,17 @@ export const ClientReviewsPage: React.FC<ClientReviewsPageProps> = ({ onNavigate
             {/* 2. The System Built */}
             <div className="bg-white rounded-3xl p-8 sm:p-10 border border-[#CBDDEB] shadow-sm">
               <div className="w-10 h-10 rounded-2xl bg-[#E7EDF5] border border-[#CBDDEB] flex items-center justify-center text-[#617594] font-bold text-[15px] mb-6">
-                02
+                {uiText.step2Num}
               </div>
               <h3 className="text-[24px] font-extrabold text-[#0B1728] mb-4">
-                What Droppfloww Engineered
+                {uiText.step2Title}
               </h3>
               <p className="text-[16px] sm:text-[17px] leading-[1.75] text-[#2A3F5B] font-normal mb-6">
                 {currentCase.systemBuilt}
               </p>
               <div className="pt-4 border-t border-[#EAF2F8] space-y-2.5">
                 <div className="text-[13px] font-bold tracking-wider uppercase text-[#617594]">
-                  Technical Architecture:
+                  {uiText.step2Details}
                 </div>
                 {currentCase.systemArchitecture.map((arch, idx) => (
                   <div key={idx} className="flex items-start gap-2.5 text-[15px] text-[#0B1728] font-medium">
@@ -405,10 +403,10 @@ export const ClientReviewsPage: React.FC<ClientReviewsPageProps> = ({ onNavigate
             {/* 3. The Business Outcome */}
             <div className="bg-white rounded-3xl p-8 sm:p-10 border border-[#CBDDEB] shadow-sm">
               <div className="w-10 h-10 rounded-2xl bg-[#F0F5FA] border border-[#CBDDEB] flex items-center justify-center text-[#3B5B7D] font-bold text-[15px] mb-6">
-                03
+                {uiText.step3Num}
               </div>
               <h3 className="text-[24px] font-extrabold text-[#0B1728] mb-4">
-                Measurable Business Impact
+                {uiText.step3Title}
               </h3>
               <p className="text-[16px] sm:text-[17px] leading-[1.75] text-[#2A3F5B] font-normal mb-6">
                 {currentCase.outcome}
@@ -426,13 +424,12 @@ export const ClientReviewsPage: React.FC<ClientReviewsPageProps> = ({ onNavigate
                 ))}
               </div>
             </div>
-
           </div>
 
           {/* High-Impact Executive Quote (Dark Navy Anchor) */}
           <div className="bg-[#0B1728] text-white rounded-3xl p-10 sm:p-14 md:p-16 border border-[#1B2F4A] shadow-xl relative overflow-hidden mb-20">
             <div className="relative z-10 max-w-[980px]">
-              <Quote className="w-12 h-12 text-[#38BDF8] mb-8" />
+              <Quote className="w-12 h-12 text-[#617594] mb-8" />
               <blockquote className="text-[22px] sm:text-[28px] md:text-[34px] font-bold text-white tracking-[-0.025em] leading-[1.3] mb-8">
                 "{currentCase.quote.text}"
               </blockquote>
@@ -455,10 +452,10 @@ export const ClientReviewsPage: React.FC<ClientReviewsPageProps> = ({ onNavigate
           {/* Bottom Conversion Invitation */}
           <div className="bg-white rounded-3xl p-10 sm:p-16 border border-[#CBDDEB] text-center shadow-sm">
             <h3 className="text-[34px] sm:text-[44px] font-extrabold text-[#0B1728] tracking-tight mb-4">
-              Have a similar operational bottleneck?
+              {uiText.bottomHeading}
             </h3>
             <p className="text-[18px] sm:text-[20px] text-[#1E2E42] font-normal max-w-[56ch] mx-auto mb-8 leading-relaxed">
-              We will review your workflows, analyze your existing tools, and outline what a custom system would look like for your business.
+              {uiText.bottomDesc}
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <button
@@ -466,18 +463,17 @@ export const ClientReviewsPage: React.FC<ClientReviewsPageProps> = ({ onNavigate
                 onClick={() => onNavigate("schedule-demo")}
                 className="inline-flex items-center justify-center bg-[#617594] hover:bg-[#50637F] text-white text-[16px] font-bold px-9 py-4 rounded-full shadow-[0_4px_18px_rgba(97,117,148,0.35)] hover:shadow-[0_6px_24px_rgba(97,117,148,0.45)] transition-all cursor-pointer"
               >
-                Schedule an operational review with Kentley
+                {uiText.bottomCta1}
               </button>
               <button
                 type="button"
                 onClick={() => onNavigate("what-we-build")}
                 className="inline-flex items-center justify-center bg-white hover:bg-[#E7EDF5] text-[#617594] text-[16px] font-bold px-8 py-4 rounded-full border border-[#617594] transition-all cursor-pointer"
               >
-                Explore all system architectures
+                {uiText.bottomCta2}
               </button>
             </div>
           </div>
-
         </div>
       </main>
     </div>

@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from "react";
-import { CLIENT_REVIEWS } from "../data/reviews";
+import React, { useEffect, useRef, useMemo } from "react";
+import { getClientReviews } from "../data/reviews";
 import { X, Clock, Building2, ExternalLink } from "lucide-react";
 import { analytics } from "../config";
+import { useLanguage } from "../i18n/LanguageContext";
 
 interface ClientFeedbackSidebarProps {
   isOpen: boolean;
@@ -9,7 +10,82 @@ interface ClientFeedbackSidebarProps {
 }
 
 export const ClientFeedbackSidebar: React.FC<ClientFeedbackSidebarProps> = ({ isOpen, onClose }) => {
+  const { language } = useLanguage();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  const reviews = useMemo(() => getClientReviews(language), [language]);
+
+  const uiText = useMemo(() => {
+    const data: Record<
+      string,
+      {
+        headerTitle: string;
+        headerDesc: string;
+        transparency: string;
+        focusLabel: string;
+        challengeLabel: string;
+        deliveredLabel: string;
+        timelineLabel: string;
+        footerQuestion: string;
+        footerBtn: string;
+        closeAria: string;
+      }
+    > = {
+      en: {
+        headerTitle: "Client Experiences",
+        headerDesc: "Field observations and measured outcomes from custom systems deployed across operations teams.",
+        transparency:
+          "Client operational metrics are documented during post-handover milestone reviews. In accordance with mutual nondisclosure agreements, commercial trading names are withheld.",
+        focusLabel: "System Focus: ",
+        challengeLabel: "Challenge: ",
+        deliveredLabel: "Delivered: ",
+        timelineLabel: "Timeline",
+        footerQuestion: "Have a comparable workflow to review?",
+        footerBtn: "Request review",
+        closeAria: "Close client feedback drawer",
+      },
+      id: {
+        headerTitle: "Pengalaman Klien",
+        headerDesc: "Observasi lapangan dan hasil terukur dari perangkat lunak operasional kustom yang telah diimplementasikan.",
+        transparency:
+          "Metrik operasional klien didokumentasikan saat tinjauan tonggak capaian pasca-serah-terima. Sesuai perjanjian kerahasiaan (NDA), nama dagang klien dirahasiakan.",
+        focusLabel: "Fokus Sistem: ",
+        challengeLabel: "Tantangan: ",
+        deliveredLabel: "Solusi Diserahkan: ",
+        timelineLabel: "Waktu Pengerjaan",
+        footerQuestion: "Punya alur kerja serupa untuk dievaluasi?",
+        footerBtn: "Minta evaluasi",
+        closeAria: "Tutup panel pengalaman klien",
+      },
+      zh: {
+        headerTitle: "客户实装反馈与评价",
+        headerDesc: "来自实际生产一线团队的现场实测数据与真实业务成效复盘。",
+        transparency:
+          "所有运营指标均在项目投产后里程碑复核中严谨测定。依据双方商业保密协议 (NDA)，严格隐去客户商业法人全称。",
+        focusLabel: "系统聚焦：",
+        challengeLabel: "原始卡点：",
+        deliveredLabel: "交付方案：",
+        timelineLabel: "交付周期",
+        footerQuestion: "也有类似的业务流程待梳理改造？",
+        footerBtn: "申请流程评估",
+        closeAria: "关闭客户反馈抽屉",
+      },
+      es: {
+        headerTitle: "Experiencias de Clientes",
+        headerDesc: "Observaciones de campo y métricas reales de sistemas personalizados implementados en operaciones.",
+        transparency:
+          "Las métricas operativas se documentan durante auditorías posteriores a la entrega. Conforme a acuerdos de confidencialidad mutua (NDA), se reservan los nombres comerciales.",
+        focusLabel: "Enfoque del Sistema: ",
+        challengeLabel: "Desafío: ",
+        deliveredLabel: "Entregado: ",
+        timelineLabel: "Cronograma",
+        footerQuestion: "¿Tiene un flujo de trabajo similar para revisar?",
+        footerBtn: "Solicitar revisión",
+        closeAria: "Cerrar panel de comentarios de clientes",
+      },
+    };
+    return data[language] || data.en;
+  }, [language]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -50,15 +126,15 @@ export const ClientFeedbackSidebar: React.FC<ClientFeedbackSidebarProps> = ({ is
           <div>
             <div className="flex items-center gap-2 mb-2">
               <img src="/df-monogram.svg" alt="" className="w-5 h-5 object-contain" />
-              <span className="text-[12px] tracking-[0.18em] uppercase font-bold text-[#3B5B7D]">
+              <span className="text-[12px] tracking-[0.18em] uppercase font-bold text-[#617594]">
                 Droppfloww Systems
               </span>
             </div>
             <h2 id="feedback-drawer-title" className="text-[26px] font-extrabold text-[#0B1728] tracking-tight">
-              Client Experiences
+              {uiText.headerTitle}
             </h2>
             <p className="text-[15px] text-[#475A70] mt-2 leading-relaxed font-normal">
-              Field observations and measured outcomes from custom systems deployed across operations teams.
+              {uiText.headerDesc}
             </p>
           </div>
 
@@ -68,7 +144,7 @@ export const ClientFeedbackSidebar: React.FC<ClientFeedbackSidebarProps> = ({ is
             type="button"
             onClick={onClose}
             className="p-2.5 text-[#52667A] hover:text-[#0B1728] rounded-full border border-[#CBDDEB] hover:bg-[#F8FAFD] focus:outline-none cursor-pointer transition-colors"
-            aria-label="Close client feedback drawer"
+            aria-label={uiText.closeAria}
           >
             <X className="w-5 h-5" />
           </button>
@@ -76,14 +152,12 @@ export const ClientFeedbackSidebar: React.FC<ClientFeedbackSidebarProps> = ({ is
 
         {/* Transparency Policy Notice */}
         <div className="px-8 py-4 bg-[#F8FAFD] border-b border-[#CBDDEB] text-[13px] text-[#52667A] leading-relaxed font-normal">
-          <span>
-            Client operational metrics are documented during post-handover milestone reviews. In accordance with mutual nondisclosure agreements, commercial trading names are withheld.
-          </span>
+          <span>{uiText.transparency}</span>
         </div>
 
         {/* Scrollable Review List */}
         <div className="flex-1 overflow-y-auto p-8 space-y-6">
-          {CLIENT_REVIEWS.map((review) => (
+          {reviews.map((review) => (
             <article
               key={review.id}
               className="bg-[#F8FAFD] p-6 rounded-2xl border border-[#CBDDEB] text-[15px]"
@@ -114,15 +188,15 @@ export const ClientFeedbackSidebar: React.FC<ClientFeedbackSidebarProps> = ({ is
               {/* Specifics: Challenge & Delivered Solution */}
               <div className="space-y-2 mb-5 text-[15px]">
                 <div>
-                  <span className="font-bold text-[#0B1728]">System Focus: </span>
+                  <span className="font-bold text-[#0B1728]">{uiText.focusLabel}</span>
                   <span className="text-[#2A3F5B] font-normal">{review.projectFocus}</span>
                 </div>
                 <div>
-                  <span className="font-bold text-[#0B1728]">Challenge: </span>
+                  <span className="font-bold text-[#0B1728]">{uiText.challengeLabel}</span>
                   <span className="text-[#2A3F5B] font-normal">{review.challenge}</span>
                 </div>
                 <div>
-                  <span className="font-bold text-[#0B1728]">Delivered: </span>
+                  <span className="font-bold text-[#0B1728]">{uiText.deliveredLabel}</span>
                   <span className="text-[#2A3F5B] font-normal">{review.deliveredSystem}</span>
                 </div>
               </div>
@@ -134,7 +208,7 @@ export const ClientFeedbackSidebar: React.FC<ClientFeedbackSidebarProps> = ({ is
                 </div>
                 <div className="flex items-center gap-1.5 text-[13px] text-[#52667A] mt-1.5 font-normal">
                   <Clock className="w-3.5 h-3.5 text-[#617594]" />
-                  <span>Timeline: {review.implementationDuration}</span>
+                  <span>{uiText.timelineLabel}: {review.implementationDuration}</span>
                 </div>
               </div>
 
@@ -149,7 +223,7 @@ export const ClientFeedbackSidebar: React.FC<ClientFeedbackSidebarProps> = ({ is
         {/* Footer CTA */}
         <div className="p-6 border-t border-[#CBDDEB] bg-[#F8FAFD] flex items-center justify-between gap-4">
           <div className="text-[15px] text-[#1E2E42] font-normal">
-            Have a comparable workflow to review?
+            {uiText.footerQuestion}
           </div>
           <button
             type="button"
@@ -161,7 +235,7 @@ export const ClientFeedbackSidebar: React.FC<ClientFeedbackSidebarProps> = ({ is
             }}
             className="inline-flex items-center gap-2 bg-[#617594] hover:bg-[#50637F] text-white text-[14px] font-bold px-5 py-2.5 rounded-full transition-colors shadow-sm cursor-pointer"
           >
-            <span>Request review</span>
+            <span>{uiText.footerBtn}</span>
             <ExternalLink className="w-3.5 h-3.5 text-white" />
           </button>
         </div>

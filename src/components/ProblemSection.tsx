@@ -1,23 +1,45 @@
 import React from "react";
 import { motion } from "motion/react";
+import { useLanguage } from "../i18n/LanguageContext";
 
 export const ProblemSection: React.FC = () => {
+  const { t, language } = useLanguage();
+
+  const subheadings: Record<string, string> = {
+    en: "The work between the work.",
+    id: "Pekerjaan tersembunyi di sela-sela tugas utama.",
+    zh: "隐没在工作夹缝中的低效损耗。",
+    es: "El trabajo silencioso entre las tareas principales.",
+  };
+
   const problemPoints = [
     {
       num: "01",
-      title: "Double-handling information",
-      detail: "Re-keying invoice items, customer addresses, or material schedules between inboxes, project drives, and accounting software."
+      numLabel: t("problem.item1Num", "Problem 01"),
+      title: t("problem.item1Title", "Double-handling information"),
+      detail: t(
+        "problem.item1Desc",
+        "Re-keying invoice items, customer addresses, or material schedules between inboxes, project drives, and accounting software."
+      ),
     },
     {
       num: "02",
-      title: "Chasing file revisions",
-      detail: "Searching through email threads to find which drawing was actually signed off, or which spreadsheet has the final pricing."
+      numLabel: t("problem.item2Num", "Problem 02"),
+      title: t("problem.item2Title", "Chasing file revisions"),
+      detail: t(
+        "problem.item2Desc",
+        "Searching through email threads to find which drawing was actually signed off, or which spreadsheet has the final pricing."
+      ),
     },
     {
       num: "03",
-      title: "Stalled internal handoffs",
-      detail: "Tasks sitting in someone's inbox waiting for manual notification, without visibility into what is blocking next week's dispatch."
-    }
+      numLabel: t("problem.item3Num", "Problem 03"),
+      title: t("problem.item3Title", "Stalled internal handoffs"),
+      detail: t(
+        "problem.item3Desc",
+        "Tasks sitting in someone's inbox waiting for manual notification, without visibility into what is blocking next week's dispatch."
+      ),
+    },
   ];
 
   return (
@@ -37,7 +59,7 @@ export const ProblemSection: React.FC = () => {
           className="mb-8"
         >
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E7EDF5] border border-[#CBDDEB] text-[12px] sm:text-[13px] font-bold text-[#617594] uppercase tracking-[0.18em]">
-            <span>Operational Reality</span>
+            <span>{t("problem.badge", "Operational Reality")}</span>
           </span>
         </motion.div>
 
@@ -52,23 +74,23 @@ export const ProblemSection: React.FC = () => {
           <div className="lg:col-span-6">
             <h2
               id="problem-heading"
-              className="text-[46px] sm:text-[62px] lg:text-[76px] font-extrabold text-[#0B1728] tracking-[-0.035em] leading-[0.98]"
+              className="text-[44px] sm:text-[60px] lg:text-[72px] font-extrabold text-[#0B1728] tracking-[-0.035em] leading-[1.02]"
             >
-              Less repetitive work.<br />
-              <span className="text-[#617594]">More useful work.</span>
+              {t("problem.headlineMain", "Less repetitive work.")}<br />
+              <span className="text-[#617594]">{t("problem.headlineSub", "More useful work.")}</span>
             </h2>
           </div>
 
           <div className="lg:col-span-6">
-            <h3 className="text-[26px] sm:text-[30px] font-extrabold text-[#0B1728] mb-5 tracking-tight">
-              The work between the work.
+            <h3 className="text-[24px] sm:text-[28px] font-extrabold text-[#0B1728] mb-5 tracking-tight">
+              {subheadings[language] || subheadings.en}
             </h3>
-            <p className="text-[19px] sm:text-[20px] md:text-[21px] leading-[1.7] text-[#1E2E42] max-w-[62ch] mb-6 font-normal">
-              Copying the same details into another spreadsheet. Looking for the latest file. Following up on an approval that should have moved yesterday. Small tasks quietly become a massive portion of the week.
+            <p className="text-[18px] sm:text-[19px] md:text-[20px] leading-[1.7] text-[#1E2E42] max-w-[62ch] mb-6 font-normal">
+              {t("problem.lead", "Copying the same details into another spreadsheet. Looking for the latest file. Following up on an approval that should have moved yesterday. Small tasks quietly become a massive portion of the week.")}
             </p>
-            <div className="flex items-center gap-2.5 text-[18px] sm:text-[19px] font-bold text-[#0B1728] tracking-tight">
+            <div className="flex items-center gap-2.5 text-[17px] sm:text-[18px] font-bold text-[#0B1728] tracking-tight">
               <span className="w-2.5 h-2.5 rounded-full bg-[#617594]" />
-              <span>We start right there.</span>
+              <span>{t("problem.callout", "We start right there.")}</span>
             </div>
           </div>
         </motion.div>
@@ -89,12 +111,12 @@ export const ProblemSection: React.FC = () => {
             >
               <div>
                 <span className="text-[12px] font-bold tracking-[0.18em] text-[#617594] uppercase mb-4 block">
-                  Problem {item.num}
+                  {item.numLabel}
                 </span>
                 <h4 className="text-[21px] sm:text-[23px] font-bold text-[#0B1728] mb-3 leading-snug tracking-tight">
                   {item.title}
                 </h4>
-                <p className="text-[16px] sm:text-[17px] leading-[1.7] text-[#1E2E42] font-normal">
+                <p className="text-[15px] sm:text-[16px] leading-[1.7] text-[#1E2E42] font-normal">
                   {item.detail}
                 </p>
               </div>
@@ -106,3 +128,4 @@ export const ProblemSection: React.FC = () => {
     </section>
   );
 };
+

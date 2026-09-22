@@ -1,0 +1,192 @@
+export const en = {
+  // Navigation
+  nav: {
+    overview: "Overview",
+    whatWeBuild: "What We Build",
+    howWeWork: "How We Work",
+    whyDroppfloww: "Why Droppfloww",
+    clientReviews: "Client Reviews",
+    scheduleDemo: "Schedule a walkthrough",
+    directFounder: "Direct Founder Engagement",
+    privacy: "Privacy Notice",
+    menu: "Menu",
+    close: "Close",
+    language: "Language",
+  },
+
+  // Hero
+  hero: {
+    badge: "Droppfloww Systems • Custom Operational Engineering",
+    title: "Do more without hiring more.",
+    subtitleLead: "We find where your operations lose time, then engineer the system that",
+    subtitleHighlight: "removes it.",
+    body: "Droppfloww Systems builds custom operational software around how your business already works—connecting fragmented tools, eliminating repetitive clerical drag, and keeping important decisions in human hands.",
+    primaryCta: "Schedule a walkthrough",
+    secondaryCta: "See what we build",
+    liveIndicator: "Interactive operational architecture",
+    trustedBy: "Engineered for growing service, field, and workflow operations",
+  },
+
+  // Problem Section
+  problem: {
+    badge: "Operational Reality",
+    headlineMain: "Less repetitive work.",
+    headlineSub: "More useful work.",
+    lead: "Copying the same details into another spreadsheet. Looking for the latest file. Following up on an approval that should have moved yesterday. Small tasks quietly become a massive portion of the week.",
+    callout: "We start right there.",
+    item1Num: "Problem 01",
+    item1Title: "Spreadsheets running the business",
+    item1Desc: "Spreadsheets are versatile, but they lack guardrails. Formulas break, duplicate files proliferate, and critical company history hides across personal drives.",
+    item1Impact: "Impact: High risk of data divergence and lost hours reconciling discrepancies.",
+    item2Num: "Problem 02",
+    item2Title: "Handoffs dropping key details",
+    item2Desc: "Passing work from sales to operations or from the office to the field often relies on memory or messy chat threads. Crucial client requests fall through the cracks.",
+    item2Impact: "Impact: Missed deadlines, client dissatisfaction, and internal team frustration.",
+    item3Num: "Problem 03",
+    item3Title: "Reporting takes days instead of seconds",
+    item3Desc: "When leadership needs answers on project margins, crew availability, or pipeline health, teams spend days piecing together fragmented reports by hand.",
+    item3Impact: "Impact: Delayed strategic decisions and leadership flying blind.",
+  },
+
+  // What We Build
+  whatWeBuild: {
+    badge: "Custom Operational Architecture",
+    title: "Systems engineered for how you actually operate",
+    subtitle: "We don't force you into bloated off-the-shelf software. We design lightweight, robust operational hubs that fit your exact workflow.",
+    cat1Title: "Project & Operations Command",
+    cat1Desc: "Unified visibility into active projects, deadlines, milestones, crew assignments, and budget burn in one synchronized interface.",
+    cat2Title: "Internal Workflow Engines",
+    cat2Desc: "Custom approval queues, automated handoffs, document generators, and notifications that keep jobs moving without constant manual reminders.",
+    cat3Title: "Client Self-Service Portals",
+    cat3Desc: "Branded, intuitive portals where clients can track deliverables, review invoices, approve milestones, and upload required documents effortlessly.",
+    cat4Title: "Field & Dispatch Systems",
+    cat4Desc: "Mobile-responsive dispatch boards, on-site photo checklists, time-stamped job completions, and immediate office synchronization.",
+    ctaExplore: "Explore full architecture details",
+    ctaConsult: "Schedule an architecture scoping call",
+  },
+
+  // How We Work
+  howWeWork: {
+    badge: "Disciplined Engagement",
+    title: "4 clear stages. Concrete deliverables at each step.",
+    subtitle: "We don't do endless consulting cycles or vague roadmap promises. Every phase yields tangible code and documented operational efficiency.",
+    stage1Num: "01",
+    stage1Name: "Operational Discovery",
+    stage1Desc: "We map your current processes, shadow team workflows, and pinpoint the exact bottlenecks stealing your staff's hours.",
+    stage1Deliverable: "Visual Workflow Map & Architecture Blueprint",
+    stage2Num: "02",
+    stage2Name: "Prototype & Validation",
+    stage2Desc: "We assemble a working prototype within 10 business days, testing actual data structures with your key operators.",
+    stage2Deliverable: "Clickable System Prototype & Schema Model",
+    stage3Num: "03",
+    stage3Name: "Production Engineering",
+    stage3Desc: "We build the full stack system with secure role permissions, real-time database sync, and fail-safe automated triggers.",
+    stage3Deliverable: "Fully Functional Production System & Integrations",
+    stage4Num: "04",
+    stage4Name: "Onboarding & Ownership",
+    stage4Desc: "We train your team, conduct live shadowing during deployment, and hand over 100% intellectual property with zero vendor lock-in.",
+    stage4Deliverable: "Operator Training Videos, Documentation & Full Code Ownership",
+    ctaStart: "Start with step one",
+  },
+
+  // Why Droppfloww
+  whyDroppfloww: {
+    badge: "The Droppfloww Difference",
+    title: "Built around your reality, not vendor lock-in",
+    subtitle: "Why forward-looking service businesses choose custom operational engineering over monthly SaaS subscriptions that never quite fit.",
+    pillar1Title: "Direct Founder Engineering",
+    pillar1Desc: "No account managers, no junior handoffs. You work directly with Kentley, our founder and principal systems architect.",
+    pillar2Title: "Zero Monthly Seat Penalties",
+    pillar2Desc: "You own the system. Add 5 or 500 team members without paying arbitrary monthly per-user tax.",
+    pillar3Title: "100% Tailored to Your Workflows",
+    pillar3Desc: "Every field, status flag, and automation is mapped strictly to how your team thrives, not someone else's generic mold.",
+    comparisonMetric: "Feature Comparison",
+    droppflowwCol: "Droppfloww Systems",
+    genericCol: "Generic SaaS (ClickUp/Airtable)",
+    agencyCol: "Traditional Enterprise Agency",
+    ctaFounder: "Speak directly with our founder",
+  },
+
+  // Client Reviews
+  reviews: {
+    badge: "Verified Client Engagements",
+    title: "Real operations transformed. Measured results.",
+    subtitle: "Discover how specialized service and operations businesses eliminated hundreds of manual hours every month.",
+    verifiedBadge: "Verified Client Engagement",
+    timelineLabel: "Timeline",
+    metricLabel: "Measured Outcome",
+    viewCaseStudy: "Explore case story",
+    ctaReview: "Schedule an operational review",
+  },
+
+  // Booking & Schedule
+  booking: {
+    badge: "Direct Founder Engagement",
+    title: "Schedule a 30-Minute Operational Walkthrough",
+    subtitle: "Share the repetitive bottleneck in your business. Kentley will walk you through a tailored operational architecture and evaluate technical feasibility—free.",
+    selectPlatform: "1. Select Meeting Format",
+    selectDate: "2. Choose a Day",
+    selectTime: "3. Choose a Time Slot (Your Local Time)",
+    topicLabel: "What operational process would you like to streamline? (Optional)",
+    topicPlaceholder: "e.g. Connecting customer estimates to field job dispatch, automated weekly client reports, or streamlining WhatsApp orders...",
+    nameLabel: "Your Name",
+    emailLabel: "Work Email",
+    companyLabel: "Company / Organization",
+    phoneLabel: "Phone / WhatsApp (Optional)",
+    submitBtn: "Confirm & Schedule Walkthrough",
+    submitting: "Securing your calendar slot...",
+    successTitle: "Walkthrough Confirmed!",
+    successMsg: "A calendar invitation with meeting links has been prepared. We look forward to analyzing your operations.",
+    whatsappAlternative: "Prefer direct WhatsApp chat?",
+    chatOnWhatsapp: "Coordinate directly on WhatsApp",
+    availableSlots: "available slots",
+    noSlots: "Fully booked on this day. Please select another date.",
+  },
+
+  // Contact Section
+  contact: {
+    badge: "Direct Scoping & Feasibility",
+    title: "Tell us about your operations",
+    subtitle: "Have a specific project in mind? Submit your bottleneck details below. Kentley reviews every submission personally within 24 hours.",
+    nameLabel: "Full Name",
+    emailLabel: "Work Email",
+    companyLabel: "Company Name",
+    serviceLabel: "Operational Focus Area",
+    detailsLabel: "Describe the repetitive tasks or bottlenecks stealing team hours",
+    detailsPlaceholder: "e.g. Re-typing contractor drawing specs, coordinating field job dispatch across chats, compiling invoice reconciliations...",
+    submitBtn: "Submit Scoping Request",
+    submitting: "Submitting details...",
+    successTitle: "Request Received",
+    successMsg: "Thank you for sharing your workflow details. Kentley will evaluate feasibility and reply directly within 24 hours.",
+    directEmailLabel: "Direct Founder Email",
+    whatsappLabel: "WhatsApp Direct",
+  },
+
+  // FAQ
+  faq: {
+    badge: "Frequently Asked Questions",
+    title: "Everything you need to know about partnering with us",
+    subtitle: "Transparent answers about timelines, pricing structures, system ownership, and technical integrations.",
+  },
+
+  // Footer
+  footer: {
+    tagline: "Custom operational software engineered for how your business already thrives.",
+    navHeading: "Navigation",
+    systemsHeading: "Systems Architecture",
+    directContactHeading: "Direct Contact",
+    rights: "All rights reserved. Droppfloww Systems.",
+    privacyNotice: "Privacy Notice",
+    switchLanguage: "Change Language:",
+  },
+
+  // Common UI
+  common: {
+    loading: "Loading...",
+    close: "Close",
+    back: "Back",
+    learnMore: "Learn more",
+    getStarted: "Get started",
+    viewAll: "View all",
+  },
+};

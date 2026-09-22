@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { analytics } from "../config";
 import { Menu, X, ArrowUpRight, ChevronRight } from "lucide-react";
 import { DfLogo } from "./DfLogo";
+import { useLanguage } from "../i18n/LanguageContext";
+import { LanguageSelector } from "./LanguageSelector";
 
 interface NavbarProps {
   activePage: string;
@@ -10,24 +12,25 @@ interface NavbarProps {
   onNavigatePrivacy: () => void;
 }
 
-const NAV_ITEMS = [
-  { id: "overview", label: "Overview" },
-  { id: "what-we-build", label: "What We Build" },
-  { id: "how-we-work", label: "How We Work" },
-  { id: "why-droppfloww", label: "Why Droppfloww" },
-  { id: "client-reviews", label: "Client Reviews" },
-];
-
 export const Navbar: React.FC<NavbarProps> = ({
   activePage,
   onNavigate,
   onOpenReviews,
   onNavigatePrivacy,
 }) => {
+  const { t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  const NAV_ITEMS = [
+    { id: "overview", labelKey: "nav.overview", fallback: "Overview" },
+    { id: "what-we-build", labelKey: "nav.whatWeBuild", fallback: "What We Build" },
+    { id: "how-we-work", labelKey: "nav.howWeWork", fallback: "How We Work" },
+    { id: "why-droppfloww", labelKey: "nav.whyDroppfloww", fallback: "Why Droppfloww" },
+    { id: "client-reviews", labelKey: "nav.clientReviews", fallback: "Client Reviews" },
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -87,41 +90,45 @@ export const Navbar: React.FC<NavbarProps> = ({
         </button>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-1.5 xl:gap-2.5" aria-label="Main Navigation">
+        <nav className="hidden lg:flex items-center gap-1.5 xl:gap-2" aria-label="Main Navigation">
           {NAV_ITEMS.map((item) => {
             const isActive = activePage === item.id;
+            const label = t(item.labelKey, item.fallback);
             return (
               <button
                 key={item.id}
                 id={`nav-link-${item.id}`}
                 type="button"
-                onClick={() => handlePageClick(item.id, item.label)}
-                className={`text-[15px] font-semibold px-4 py-2 rounded-full transition-all duration-150 focus:outline-none cursor-pointer ${
+                onClick={() => handlePageClick(item.id, label)}
+                className={`text-[14px] xl:text-[15px] font-semibold px-3.5 xl:px-4 py-2 rounded-full transition-all duration-150 focus:outline-none cursor-pointer whitespace-nowrap ${
                   isActive
                     ? "bg-[#E7EDF5] text-[#617594] font-bold shadow-2xs border border-[#CBDDEB]"
                     : "text-[#2A3F5B] hover:text-[#617594] hover:bg-[#E7EDF5]/60"
                 }`}
               >
-                <span>{item.label}</span>
+                <span>{label}</span>
               </button>
             );
           })}
         </nav>
 
-        {/* Desktop Right CTAs */}
+        {/* Desktop Right CTAs with Language Switcher */}
         <div className="hidden lg:flex items-center gap-3">
+          <LanguageSelector variant="navbar" />
+
           <button
             id="nav-cta-book"
             type="button"
             onClick={() => handlePageClick("schedule-demo", "Schedule a demo")}
-            className="inline-flex items-center justify-center bg-[#617594] hover:bg-[#50637F] text-white text-[15px] font-bold px-6 py-2.5 rounded-full shadow-[0_3px_12px_rgba(97,117,148,0.25)] hover:shadow-[0_4px_18px_rgba(97,117,148,0.35)] transition-all duration-200 hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#617594] cursor-pointer"
+            className="inline-flex items-center justify-center bg-[#617594] hover:bg-[#50637F] text-white text-[14px] xl:text-[15px] font-bold px-5 xl:px-6 py-2.5 rounded-full shadow-[0_3px_12px_rgba(97,117,148,0.25)] hover:shadow-[0_4px_18px_rgba(97,117,148,0.35)] transition-all duration-200 hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#617594] cursor-pointer whitespace-nowrap"
           >
-            <span>Schedule a walkthrough</span>
+            <span>{t("nav.scheduleDemo", "Schedule a walkthrough")}</span>
           </button>
         </div>
 
-        {/* Mobile Menu Trigger Button */}
+        {/* Mobile Menu Trigger & Quick Lang Switcher */}
         <div className="flex lg:hidden items-center gap-2">
+          <LanguageSelector variant="navbar" />
           <button
             ref={menuButtonRef}
             id="mobile-menu-trigger"
@@ -164,21 +171,27 @@ export const Navbar: React.FC<NavbarProps> = ({
               </button>
             </div>
 
-            <nav className="flex flex-col py-6 space-y-2" aria-label="Mobile Menu Links">
+            {/* Mobile Language Selector */}
+            <div className="pt-4 pb-2 border-b border-[#CBDDEB]">
+              <LanguageSelector variant="mobile" />
+            </div>
+
+            <nav className="flex flex-col py-4 space-y-2" aria-label="Mobile Menu Links">
               {NAV_ITEMS.map((item) => {
                 const isActive = activePage === item.id;
+                const label = t(item.labelKey, item.fallback);
                 return (
                   <button
                     key={item.id}
                     type="button"
-                    onClick={() => handlePageClick(item.id, item.label)}
+                    onClick={() => handlePageClick(item.id, label)}
                     className={`flex items-center justify-between text-[17px] font-bold py-3.5 px-4 rounded-xl text-left cursor-pointer transition-colors ${
                       isActive
                         ? "bg-[#E7EDF5] text-[#617594] border border-[#CBDDEB]"
                         : "text-[#0B1728] hover:bg-[#E7EDF5]/50"
                     }`}
                   >
-                    <span>{item.label}</span>
+                    <span>{label}</span>
                     <ChevronRight className="w-4 h-4 text-[#617594]" />
                   </button>
                 );
@@ -192,7 +205,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 }}
                 className="text-[15px] text-[#2A3F5B] py-2 px-4 text-left hover:text-[#617594] cursor-pointer"
               >
-                Privacy Notice
+                {t("nav.privacy", "Privacy Notice")}
               </button>
             </nav>
 
@@ -203,7 +216,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={() => handlePageClick("schedule-demo", "Schedule a demo mobile")}
                 className="w-full flex items-center justify-center bg-[#617594] text-white text-[16px] font-bold py-4 rounded-full hover:bg-[#50637F] transition-all shadow-[0_4px_14px_rgba(97,117,148,0.25)] cursor-pointer"
               >
-                Schedule a walkthrough
+                {t("nav.scheduleDemo", "Schedule a walkthrough")}
               </button>
             </div>
           </div>
@@ -212,3 +225,4 @@ export const Navbar: React.FC<NavbarProps> = ({
     </header>
   );
 };
+

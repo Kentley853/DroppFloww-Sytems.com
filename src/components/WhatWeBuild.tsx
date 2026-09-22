@@ -1,204 +1,110 @@
-import React, { useState } from "react";
-import { ArrowRight, CheckCircle2, AlertCircle } from "lucide-react";
+import React, { useState, useMemo } from "react";
+import { ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { analytics } from "../config";
-
-interface SelectedSystem {
-  id: string;
-  num: string;
-  tabLabel: string;
-  tag: string;
-  headline: string;
-  summary: string;
-  beforeHeadline: string;
-  beforeDetail: string;
-  afterHeadline: string;
-  afterDetail: string;
-  capabilities: string[];
-  philosophy: string;
-  imageUrl: string;
-  imageAlt: string;
-  imageCaption: string;
-  keyMetric: string;
-  keyMetricLabel: string;
-}
+import { useLanguage } from "../i18n/LanguageContext";
+import { getSelectedSystems, SelectedSystem } from "../data/whatWeBuildSystems";
 
 interface WhatWeBuildProps {
   onNavigate?: (page: string) => void;
 }
 
 export const WhatWeBuild: React.FC<WhatWeBuildProps> = ({ onNavigate }) => {
+  const { t, language } = useLanguage();
   const [activeTab, setActiveTab] = useState<number>(0);
 
-  const systems: SelectedSystem[] = [
-    {
-      id: "infrastructure",
-      num: "01",
-      tabLabel: "Infrastructure",
-      tag: "SELECTED SYSTEM: INFRASTRUCTURE",
-      headline: "From fragmented engineering work to one connected workflow.",
-      summary:
-        "Droppfloww helps engineering and infrastructure teams bring drawings, estimates, approvals, project data, and reporting into one system, reducing repetitive work and making information easier to review.",
-      beforeHeadline:
-        "Drawings, spreadsheets, pricing, approvals, and project information live across separate tools.",
-      beforeDetail:
-        "Estimators manually trace CAD drawings sheet by sheet, re-type pipe and material specifications into separate spreadsheets, and chase email approvals right before tender submission deadlines. Version mismatches create serious risk on multi-million dollar contracts.",
-      afterHeadline:
-        "Information moves through one structured workflow, while engineers remain in control of important decisions.",
-      afterDetail:
-        "Quantities extract directly from source drawings, unit cost calculations remain locked to verified formulas, and authenticated sign-offs happen inside the system with a complete audit history. Your team tenders faster with total confidence in the numbers.",
-      capabilities: [
-        "Drawing & document intake",
-        "BOQ preparation",
-        "Cost calculations",
-        "Approval workflows",
-        "Project reporting",
-      ],
-      philosophy:
-        "Built around your existing process, not the other way around. We study how your estimators, project managers, and directors actually review calculations today. We do not replace your engineering judgment. We remove the clerical friction so your team can focus on technical precision.",
-      imageUrl:
-        "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80",
-      imageAlt: "Civil engineers reviewing blueprints and infrastructure specifications",
-      imageCaption:
-        "Engineering drawings, specifications, and BOQ takeoff connected in a single audited workspace.",
-      keyMetric: "30 min",
-      keyMetricLabel: "Average turnaround from CAD layers to final tender budget",
-    },
-    {
-      id: "operations",
-      num: "02",
-      tabLabel: "Business Operations",
-      tag: "SELECTED SYSTEM: BUSINESS OPERATIONS",
-      headline: "From scattered office tasks to one dependable operating backbone.",
-      summary:
-        "Droppfloww helps office teams reduce repetitive admin work, connect disconnected tools, and keep reporting, finance, scheduling, and customer records moving in one clean workflow.",
-      beforeHeadline:
-        "Customer records, invoices, bank statements, and project notes remain trapped in separate silos.",
-      beforeDetail:
-        "Details arrive in email threads, get typed into client spreadsheets, moved into accounting software, and manually re-compiled for Friday management updates. Teams spend valuable hours doing routine clerical copy and paste.",
-      afterHeadline:
-        "Data moves between tools automatically while your staff retains full visibility and oversight.",
-      afterDetail:
-        "Invoices match bank records as payments arrive, customer records synchronize across platforms without double entry, and weekly executive digests compile on schedule without anyone having to chase colleagues for numbers.",
-      capabilities: [
-        "Automated invoice matching",
-        "Cross-tool record sync",
-        "Approval routing",
-        "Weekly executive digests",
-        "Centralized operations portal",
-      ],
-      philosophy:
-        "Built around your existing process, not the other way around. We do not ask your team to discard tools that work or adapt to bloated software with hundreds of unused menus. We build a clean, fast layer that keeps information moving between the people who need it.",
-      imageUrl:
-        "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1200&q=80",
-      imageAlt: "Clean modern business operations workspace with team working on financial records",
-      imageCaption:
-        "Centralized operational backbone connecting customer records, finance, and team scheduling.",
-      keyMetric: "12+ hrs",
-      keyMetricLabel: "Saved per staff member each week on repetitive clerical admin",
-    },
-    {
-      id: "logistics",
-      num: "03",
-      tabLabel: "Logistics & Fleet",
-      tag: "SELECTED SYSTEM: LOGISTICS & DISTRIBUTION",
-      headline: "From manual dispatch sheets to live delivery and margin protection.",
-      summary:
-        "Droppfloww helps freight and distribution teams link customer orders directly to route manifests, protect profit margins against fluctuating transport costs, and keep dispatch running smoothly.",
-      beforeHeadline:
-        "Orders arrive through phone calls and messaging chats while dispatchers plan routes on paper.",
-      beforeDetail:
-        "Dispatchers scramble to check warehouse stock, calculate vehicle load limits on scratch pads, and negotiate fuel surcharges on the fly. Unchecked delivery rates eat into gross margins before management realizes.",
-      afterHeadline:
-        "Orders validate against live inventory and route manifests dispatch directly to drivers.",
-      afterDetail:
-        "Incoming orders verify instantly against stock records, driver route manifests generate in sequenced order, and every delivery job passes through automated margin guard logic before trucks leave the depot.",
-      capabilities: [
-        "Live order intake hub",
-        "Sequenced driver manifests",
-        "Margin guard rate checker",
-        "Proof of delivery sync",
-        "Warehouse stock tracking",
-      ],
-      philosophy:
-        "Built around your existing process, not the other way around. Your dispatchers keep their fast decision pace, while the system quietly handles calculation checks, route generation, and customer status notifications in the background.",
-      imageUrl:
-        "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80",
-      imageAlt: "Logistics distribution warehouse and fleet operations facility",
-      imageCaption:
-        "Live manifest sequencing, inventory verification, and automated transport margin guards.",
-      keyMetric: "100%",
-      keyMetricLabel: "Transport routes audited against live fuel and vehicle margin rules",
-    },
-    {
-      id: "healthcare",
-      num: "04",
-      tabLabel: "Healthcare & Clinics",
-      tag: "SELECTED SYSTEM: HEALTHCARE & LOCAL SERVICES",
-      headline: "From paper clipboards and ringing phones to calm patient flow.",
-      summary:
-        "Droppfloww helps medical clinics, dental practices, and local service providers cut empty-chair no-shows, collect intake forms before patients arrive, and keep recall appointments on track.",
-      beforeHeadline:
-        "Front desk staff juggle phone calls, paper clipboards, and manual appointment ledgers.",
-      beforeDetail:
-        "Receptionists spend all morning confirming tomorrow's calendar by phone, paper intake sheets must be re-typed into clinic records, and forgotten appointments leave practitioners with expensive empty chairs.",
-      afterHeadline:
-        "Patients confirm visits on their phones and clinical staff focus entirely on care.",
-      afterDetail:
-        "Patients book through a clean scheduling portal, intake forms are completed on mobile phones prior to arrival, and automated WhatsApp reminders keep attendance high while recall sequences bring patients back on time.",
-      capabilities: [
-        "Practitioner calendar engine",
-        "Automated WhatsApp reminders",
-        "Mobile paperless intake",
-        "Post-treatment recall sequences",
-        "Treatment room coordination",
-      ],
-      philosophy:
-        "Built around your existing process, not the other way around. Your clinical protocols remain untouched. We simply remove the administrative weight from reception so your staff can greet patients with undivided attention.",
-      imageUrl:
-        "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1200&q=80",
-      imageAlt: "Modern clean clinic consultation room and reception",
-      imageCaption:
-        "Paperless mobile intake, automated appointment confirmations, and multi-chair practitioner scheduling.",
-      keyMetric: "68%",
-      keyMetricLabel: "Reduction in empty-chair cancellations through automated confirmation",
-    },
-    {
-      id: "education",
-      num: "05",
-      tabLabel: "Education & Academies",
-      tag: "SELECTED SYSTEM: EDUCATION & ACADEMIES",
-      headline: "From whiteboard timetables to structured academic coordination.",
-      summary:
-        "Droppfloww helps schools, tutoring academies, and training centers schedule classes without room conflicts, automate parent communications, and manage student tuition tracking with clarity.",
-      beforeHeadline:
-        "Timetable adjustments cause double-booked rooms and admissions scatter across chat groups.",
-      beforeDetail:
-        "Coordinators spend hours resolving room and teacher overlaps on dry-erase boards, tuition payments hide across personal bank transfers, and staff spend weekends manually messaging parents about schedule changes.",
-      afterHeadline:
-        "One central calendar synchronizes rooms, instructors, student rosters, and fee status.",
-      afterDetail:
-        "Room and teacher schedules adjust without conflicts, parent announcements send automatically through official channels, and student enrolment pipelines show attendance and tuition balance in real time.",
-      capabilities: [
-        "Conflict-free timetable planner",
-        "Automated parent updates",
-        "Enrolment and intake pipeline",
-        "Tuition fee ledger",
-        "Attendance tracking portal",
-      ],
-      philosophy:
-        "Built around your existing process, not the other way around. We respect the academic calendar and grading rhythms of your institution. The system supports your teachers and coordinators without adding technical complexity to their day.",
-      imageUrl:
-        "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80",
-      imageAlt: "Modern educational academy study and learning environment",
-      imageCaption:
-        "Conflict-free class scheduling, automated parent announcements, and integrated tuition tracking.",
-      keyMetric: "0",
-      keyMetricLabel: "Classroom double-bookings with automated conflict-free scheduling",
-    },
-  ];
+  const systems: SelectedSystem[] = useMemo(() => {
+    return getSelectedSystems(language);
+  }, [language]);
 
-  const current = systems[activeTab];
+  const current = systems[activeTab] || systems[0];
+
+  const uiCopy = useMemo(() => {
+    const data: Record<
+      string,
+      {
+        badge: string;
+        title: string;
+        subtitle: string;
+        impactLabel: string;
+        capabilitiesLabel: string;
+        walkthroughCta: string;
+        beforeLabel: string;
+        afterLabel: string;
+        philosophyLabel: string;
+        bottomPrompt: string;
+        bottomText: string;
+        bottomCta: string;
+      }
+    > = {
+      en: {
+        badge: "Custom Software Architecture",
+        title: "Custom systems built for real operations.",
+        subtitle:
+          "Software engineered around the way your people already work: eliminating repetitive clerical drag, connecting fragmented tools, and keeping everyday decisions in human hands.",
+        impactLabel: "Measured Operational Impact",
+        capabilitiesLabel: "Core Capabilities",
+        walkthroughCta: "Schedule a walkthrough for this system",
+        beforeLabel: "Before Droppfloww",
+        afterLabel: "With Droppfloww",
+        philosophyLabel: "Our Engineering Philosophy",
+        bottomPrompt: "Have a unique internal process?",
+        bottomText:
+          "We begin by studying your existing documents, spreadsheets, and bottlenecks. Then we engineer the software directly with the people doing the work.",
+        bottomCta: "Review your workflow with Kentley",
+      },
+      id: {
+        badge: "Arsitektur Perangkat Lunak Kustom",
+        title: "Sistem kustom yang dibangun untuk operasional nyata.",
+        subtitle:
+          "Perangkat lunak yang direkayasa mengikuti alur kerja tim Anda: meniadakan beban klerikal yang berulang, menghubungkan alat yang terpisah, dan menjaga kendali keputusan penting tetap di tangan manusia.",
+        impactLabel: "Dampak Operasional Terukur",
+        capabilitiesLabel: "Kapabilitas Utama",
+        walkthroughCta: "Jadwalkan tinjauan sistem ini",
+        beforeLabel: "Sebelum Droppfloww",
+        afterLabel: "Bersama Droppfloww",
+        philosophyLabel: "Filosofi Rekayasa Kami",
+        bottomPrompt: "Punya proses internal yang unik?",
+        bottomText:
+          "Kami mulai dengan mempelajari dokumen, spreadsheet, dan hambatan Anda saat ini. Kemudian kami membangun perangkat lunak langsung bersama orang-orang yang menjalankan pekerjaan tersebut.",
+        bottomCta: "Tinjau alur kerja bersama Kentley",
+      },
+      zh: {
+        badge: "定制软件系统架构",
+        title: "为真实业务运营量身铸造的定制软件系统。",
+        subtitle:
+          "紧密契合您团队既有工作习惯而精细工程化的系统：消除繁琐机械的人工誊抄，打通割裂分散的工具数据，让关键决策始终牢牢掌握在专业人员手中。",
+        impactLabel: "可量化的运营成效",
+        capabilitiesLabel: "核心系统功能",
+        walkthroughCta: "预约该系统的专属演示",
+        beforeLabel: "引入 Droppfloww 前",
+        afterLabel: "使用 Droppfloww 系统后",
+        philosophyLabel: "我们的工程设计理念",
+        bottomPrompt: "拥有独特的内部业务流程？",
+        bottomText:
+          "我们首先深入剖析您现有的文档、报表与堵点。随后与一线具体操盘的业务骨干并肩构建系统。",
+        bottomCta: "与创始人 Kentley 深度评估业务流程",
+      },
+      es: {
+        badge: "Arquitectura de Software a Medida",
+        title: "Sistemas a medida construidos para operaciones reales.",
+        subtitle:
+          "Software diseñado en función de cómo ya trabaja su equipo: eliminando la fricción administrativa repetitiva, conectando herramientas fragmentadas y manteniendo las decisiones clave en manos humanas.",
+        impactLabel: "Impacto Operativo Medido",
+        capabilitiesLabel: "Capacidades Clave",
+        walkthroughCta: "Programar una demostración de este sistema",
+        beforeLabel: "Antes de Droppfloww",
+        afterLabel: "Con Droppfloww",
+        philosophyLabel: "Nuestra Filosofía de Ingeniería",
+        bottomPrompt: "¿Tiene un proceso interno único?",
+        bottomText:
+          "Comenzamos estudiando sus documentos, hojas de cálculo y cuellos de botella actuales. Luego desarrollamos el software directamente con las personas que realizan el trabajo.",
+        bottomCta: "Revise su flujo de trabajo con Kentley",
+      },
+    };
+
+    return data[language] || data.en;
+  }, [language]);
 
   return (
     <section
@@ -207,8 +113,7 @@ export const WhatWeBuild: React.FC<WhatWeBuildProps> = ({ onNavigate }) => {
       aria-labelledby="what-we-build-title"
     >
       <div className="max-w-[1320px] mx-auto px-6 md:px-10">
-        
-        {/* Section Header: Broad Selected Systems & What We Build */}
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -218,17 +123,17 @@ export const WhatWeBuild: React.FC<WhatWeBuildProps> = ({ onNavigate }) => {
         >
           <div className="mb-6">
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E7EDF5] border border-[#CBDDEB] text-[12px] sm:text-[13px] font-bold text-[#617594] uppercase tracking-[0.18em]">
-              <span>Custom Software Architecture</span>
+              <span>{uiCopy.badge}</span>
             </span>
           </div>
           <h2
             id="what-we-build-title"
             className="text-[44px] sm:text-[58px] lg:text-[72px] font-extrabold text-[#0B1728] tracking-[-0.035em] leading-[1.02] mb-6"
           >
-            Custom systems built for real operations.
+            {uiCopy.title}
           </h2>
           <p className="text-[19px] sm:text-[21px] md:text-[22px] leading-[1.7] text-[#1E2E42] font-normal max-w-[64ch]">
-            Software engineered around the way your people already work: eliminating repetitive clerical drag, connecting fragmented tools, and keeping everyday decisions in human hands.
+            {uiCopy.subtitle}
           </p>
         </motion.div>
 
@@ -310,7 +215,7 @@ export const WhatWeBuild: React.FC<WhatWeBuildProps> = ({ onNavigate }) => {
               <div className="lg:col-span-4 flex flex-col justify-between h-full space-y-6">
                 <div className="p-7 rounded-2xl bg-[#F8FAFD] border border-[#D7E3EE]">
                   <div className="text-[12px] font-bold text-[#617594] uppercase tracking-wider mb-2">
-                    Measured Operational Impact
+                    {uiCopy.impactLabel}
                   </div>
                   <div className="text-[44px] sm:text-[50px] font-extrabold text-[#617594] tracking-tight leading-none mb-2.5">
                     {current.keyMetric}
@@ -322,13 +227,13 @@ export const WhatWeBuild: React.FC<WhatWeBuildProps> = ({ onNavigate }) => {
 
                 <div>
                   <div className="text-[16px] font-bold text-[#0B1728] mb-3.5">
-                    Core Capabilities
+                    {uiCopy.capabilitiesLabel}
                   </div>
                   <div className="space-y-2.5">
                     {current.capabilities.map((cap) => (
                       <div
                         key={cap}
-                        className="flex items-center gap-3 text-[16px] sm:text-[17px] text-[#0B1728] font-medium"
+                        className="flex items-center gap-3 text-[15px] sm:text-[16px] text-[#0B1728] font-medium"
                       >
                         <span className="w-2.5 h-2.5 rounded-full bg-[#617594] shrink-0" />
                         <span>{cap}</span>
@@ -343,9 +248,9 @@ export const WhatWeBuild: React.FC<WhatWeBuildProps> = ({ onNavigate }) => {
                     onClick={() =>
                       analytics.trackCtaClick(`system_cta_${current.id}`)
                     }
-                    className="inline-flex items-center gap-2.5 text-[16px] font-bold text-[#617594] hover:text-[#50637F] transition-colors group cursor-pointer"
+                    className="inline-flex items-center gap-2.5 text-[15px] sm:text-[16px] font-bold text-[#617594] hover:text-[#50637F] transition-colors group cursor-pointer"
                   >
-                    <span>Schedule a walkthrough for this system</span>
+                    <span>{uiCopy.walkthroughCta}</span>
                     <ArrowRight className="w-4.5 h-4.5 text-[#617594] group-hover:translate-x-1 transition-transform" />
                   </a>
                 </div>
@@ -358,12 +263,12 @@ export const WhatWeBuild: React.FC<WhatWeBuildProps> = ({ onNavigate }) => {
               <div className="p-8 sm:p-9 rounded-2xl bg-[#F8FAFD] border border-[#CBDDEB] flex flex-col justify-between">
                 <div>
                   <div className="text-[12px] font-bold text-[#62768D] uppercase tracking-wider mb-3">
-                    Before Droppfloww
+                    {uiCopy.beforeLabel}
                   </div>
                   <h4 className="text-[21px] sm:text-[23px] font-bold text-[#0B1728] leading-snug mb-3">
                     {current.beforeHeadline}
                   </h4>
-                  <p className="text-[16px] sm:text-[17px] text-[#2A3F5B] leading-[1.7] font-normal">
+                  <p className="text-[15px] sm:text-[16px] text-[#2A3F5B] leading-[1.7] font-normal">
                     {current.beforeDetail}
                   </p>
                 </div>
@@ -374,12 +279,12 @@ export const WhatWeBuild: React.FC<WhatWeBuildProps> = ({ onNavigate }) => {
                 <div>
                   <div className="text-[12px] font-bold text-[#617594] uppercase tracking-wider mb-3 flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-[#617594]" />
-                    <span>With Droppfloww</span>
+                    <span>{uiCopy.afterLabel}</span>
                   </div>
                   <h4 className="text-[21px] sm:text-[23px] font-bold text-[#0B1728] leading-snug mb-3">
                     {current.afterHeadline}
                   </h4>
-                  <p className="text-[16px] sm:text-[17px] text-[#0B1728] font-medium leading-[1.7]">
+                  <p className="text-[15px] sm:text-[16px] text-[#0B1728] font-medium leading-[1.7]">
                     {current.afterDetail}
                   </p>
                 </div>
@@ -389,25 +294,26 @@ export const WhatWeBuild: React.FC<WhatWeBuildProps> = ({ onNavigate }) => {
             {/* Grounded Human Philosophy Statement */}
             <div className="p-8 sm:p-9 rounded-2xl bg-[#F3F7FB] border border-[#CBDDEB]">
               <div className="text-[12px] font-bold text-[#617594] uppercase tracking-wider mb-2.5">
-                Our Engineering Philosophy
+                {uiCopy.philosophyLabel}
               </div>
-              <p className="text-[18px] sm:text-[19px] text-[#0B1728] leading-[1.75] font-normal">
+              <p className="text-[17px] sm:text-[18px] text-[#0B1728] leading-[1.75] font-normal">
                 {current.philosophy}
               </p>
             </div>
           </motion.div>
         </AnimatePresence>
 
-        {/* Section Footer: Solid & Direct Callout */}
+        {/* Section Footer */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="mt-14 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pt-6 text-[16px] sm:text-[17px] text-[#1E2E42] font-normal border-t border-[#CBDDEB]/60"
+          className="mt-14 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pt-6 text-[15px] sm:text-[16px] text-[#1E2E42] font-normal border-t border-[#CBDDEB]/60"
         >
           <p className="max-w-[72ch] leading-relaxed">
-            <strong className="text-[#0B1728] font-bold">Have a unique internal process?</strong> We begin by studying your existing documents, spreadsheets, and bottlenecks. Then we engineer the software directly with the people doing the work.
+            <strong className="text-[#0B1728] font-bold">{uiCopy.bottomPrompt}</strong>{" "}
+            {uiCopy.bottomText}
           </p>
           <button
             type="button"
@@ -419,13 +325,12 @@ export const WhatWeBuild: React.FC<WhatWeBuildProps> = ({ onNavigate }) => {
                 document.getElementById("book-call")?.scrollIntoView({ behavior: "smooth" });
               }
             }}
-            className="inline-flex items-center gap-2.5 font-bold text-[#617594] hover:text-[#50637F] whitespace-nowrap text-[16px] sm:text-[17px] cursor-pointer transition-colors"
+            className="inline-flex items-center gap-2.5 font-bold text-[#617594] hover:text-[#50637F] whitespace-nowrap text-[15px] sm:text-[16px] cursor-pointer transition-colors"
           >
-            <span>Review your workflow with Kentley</span>
+            <span>{uiCopy.bottomCta}</span>
             <ArrowRight className="w-4.5 h-4.5 text-[#617594]" />
           </button>
         </motion.div>
-
       </div>
     </section>
   );

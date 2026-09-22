@@ -15,13 +15,14 @@ import {
   Download,
   Check,
   Globe,
-  Sparkles,
   Send,
   User,
   Building2,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { CONFIG } from "../config";
+import { useLanguage } from "../i18n/LanguageContext";
+import { getBookCallTranslations } from "../data/bookCallTranslations";
 
 interface BookCallSectionProps {
   id?: string;
@@ -43,22 +44,6 @@ const BASE_SLOTS_JAKARTA: BaseTimeSlot[] = [
   { id: "slot-1930", hourWIB: 19, minuteWIB: 30 },
 ];
 
-const PLATFORMS = [
-  { id: "Google Meet", label: "Google Meet", note: "Video link auto-generated" },
-  { id: "WhatsApp Video / Call", label: "WhatsApp Direct", note: "+62 858-2046-7085" },
-  { id: "Zoom", label: "Zoom Meeting", note: "Conference invite" },
-  { id: "Direct Phone Call", label: "Direct Phone", note: "Cellular call" },
-];
-
-const MONTH_NAMES = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
-];
-
-const WEEKDAY_NAMES = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-const WEEKDAY_SHORT = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-// Curated list of global timezones with clean labels
 const COMMON_TIMEZONES = [
   { id: "Asia/Jakarta", label: "Jakarta (WIB, UTC+7)", city: "Jakarta" },
   { id: "Asia/Singapore", label: "Singapore / Kuala Lumpur (SGT, UTC+8)", city: "Singapore" },
@@ -74,7 +59,10 @@ const COMMON_TIMEZONES = [
   { id: "America/Los_Angeles", label: "Los Angeles / Pacific (PDT, UTC-7)", city: "Los Angeles" },
 ];
 
-function getOrdinalSuffix(day: number): string {
+function getOrdinalSuffix(day: number, language: string): string {
+  if (language === "id") return `Tgl ${day}`;
+  if (language === "zh") return `${day}日`;
+  if (language === "es") return `${day}º`;
   const j = day % 10;
   const k = day % 100;
   if (j === 1 && k !== 11) return `${day}st`;
@@ -84,10 +72,13 @@ function getOrdinalSuffix(day: number): string {
 }
 
 export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-call" }) => {
-  // Calendar month state — opens initially on October 2026 to match reference design structure
+  const { language } = useLanguage();
+  const trans = useMemo(() => getBookCallTranslations(language), [language]);
+
+  // Calendar month state
   const [currentYear, setCurrentYear] = useState<number>(2026);
   const [currentMonth, setCurrentMonth] = useState<number>(9); // October
-  const [selectedDay, setSelectedDay] = useState<number>(2); // Default to Friday 2nd so open slots are ready, but day 1 is also viewable
+  const [selectedDay, setSelectedDay] = useState<number>(2); // Default to Friday 2nd
   const [timeFormat, setTimeFormat] = useState<"12h" | "24h">("12h");
 
   // User timezone detection
@@ -179,15 +170,15 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
   }, [currentYear, currentMonth, selectedDay]);
 
   const selectedWeekdayShort = useMemo(() => {
-    return WEEKDAY_SHORT[selectedDateObj.getDay()];
-  }, [selectedDateObj]);
+    const dayIdx = selectedDateObj.getDay();
+    return trans.weekdays[dayIdx] || "DAY";
+  }, [selectedDateObj, trans.weekdays]);
 
   const selectedDateHeader = useMemo(() => {
-    return `${selectedWeekdayShort} ${getOrdinalSuffix(selectedDay)}`;
-  }, [selectedWeekdayShort, selectedDay]);
+    return `${selectedWeekdayShort} ${getOrdinalSuffix(selectedDay, language)}`;
+  }, [selectedWeekdayShort, selectedDay, language]);
 
-  // Booked dates:
-  // Thu 1st of October 2026 is booked (matches reference image!). Sundays are also booked.
+  // Booked dates
   const isSelectedDayBooked = useMemo(() => {
     const isSunday = selectedDateObj.getDay() === 0;
     const isOct1st2026 = currentYear === 2026 && currentMonth === 9 && selectedDay === 1;
@@ -197,20 +188,18 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
 
   // Full date formatted for calendar invitation
   const formattedFullDate = useMemo(() => {
-    return selectedDateObj.toLocaleDateString("en-US", {
+    const locale = language === "id" ? "id-ID" : language === "zh" ? "zh-CN" : language === "es" ? "es-ES" : "en-US";
+    return selectedDateObj.toLocaleDateString(locale, {
       weekday: "long",
       year: "numeric",
       month: "long",
       day: "numeric",
     });
-  }, [selectedDateObj]);
+  }, [selectedDateObj, language]);
 
   // Dynamic Time Slots converted to the user's timezone!
   const computedSlots = useMemo(() => {
     return BASE_SLOTS_JAKARTA.map((slot) => {
-      // Create a deterministic reference date for this slot on the selected date:
-      // Host Kentley is in Jakarta (WIB = UTC+7)
-      // UTC Hour = hourWIB - 7
       const utcDate = new Date(Date.UTC(
         currentYear,
         currentMonth,
@@ -221,7 +210,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
 
       let localFormatted = "";
       try {
-        const formatter = new Intl.DateTimeFormat("en-US", {
+        const formatter = new Intl.DateTimeFormat(language === "zh" ? "zh-CN" : language === "es" ? "es-ES" : language === "id" ? "id-ID" : "en-US", {
           timeZone: userTimezone,
           hour: "numeric",
           minute: "2-digit",
@@ -239,7 +228,6 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
         }
       }
 
-      // Jakarta reference label
       const pad = (n: number) => n.toString().padStart(2, "0");
       const jakartaLabel = `${pad(slot.hourWIB)}:${pad(slot.minuteWIB)}`;
 
@@ -249,7 +237,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
         jakartaLabel,
       };
     });
-  }, [currentYear, currentMonth, selectedDay, userTimezone, timeFormat]);
+  }, [currentYear, currentMonth, selectedDay, userTimezone, timeFormat, language]);
 
   const activeSlot = useMemo(() => {
     return computedSlots.find((s) => s.id === selectedSlotId) || computedSlots[1];
@@ -260,7 +248,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
     return `${activeSlot.localLabel} (${userTimezone.split("/").pop()?.replace(/_/g, " ") || "Local"})`;
   }, [activeSlot, userTimezone]);
 
-  // Function to smoothly glide towards attendee details form
+  // Smooth scroll towards attendee details form
   const scrollToAttendeeDetails = () => {
     if (attendeeCardRef.current) {
       attendeeCardRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -274,7 +262,6 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
     }
   };
 
-  // When picking a slot, select it and glide to the details form!
   const handleSelectSlot = (slotId: string) => {
     setSelectedSlotId(slotId);
     scrollToAttendeeDetails();
@@ -283,23 +270,22 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
   // Direct WhatsApp prefill
   const directWhatsAppPrefill = useMemo(() => {
     const text = encodeURIComponent(
-      `Hi Kentley, I would like to schedule a demo with Droppfloww Systems on ${formattedFullDate} at ${selectedTimeSlotLabel}. ` +
-      (formData.name ? `My name is ${formData.name}.` : "")
+      trans.whatsAppMessagePrefill(formattedFullDate, selectedTimeSlotLabel, formData.name)
     );
     return `https://wa.me/6285820467085?text=${text}`;
-  }, [formattedFullDate, selectedTimeSlotLabel, formData.name]);
+  }, [formattedFullDate, selectedTimeSlotLabel, formData.name, trans]);
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
     if (isSelectedDayBooked) {
-      newErrors.date = "The selected date is fully booked. Please click an open date on the calendar.";
+      newErrors.date = trans.dateErrorFull;
     }
     if (!formData.name.trim() || formData.name.trim().length < 2) {
-      newErrors.name = "Please enter your full name (at least 2 characters).";
+      newErrors.name = trans.nameError;
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim() || !emailRegex.test(formData.email.trim())) {
-      newErrors.email = "Please enter a valid work email address.";
+      newErrors.email = trans.emailError;
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -447,7 +433,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
 
       <div className="max-w-[1320px] mx-auto px-6 md:px-10">
         
-        {/* Section Header with generous typography */}
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -457,17 +443,17 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
         >
           <div className="mb-6">
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E7EDF5] border border-[#CBDDEB] text-[12px] sm:text-[13px] font-bold text-[#617594] uppercase tracking-[0.18em]">
-              <span>Direct Founder Engagement</span>
+              <span>{trans.badge}</span>
             </span>
           </div>
           <h2
             id="schedule-demo-heading"
             className="text-[44px] sm:text-[58px] lg:text-[72px] font-extrabold text-[#0B1728] tracking-[-0.035em] leading-[1.02] mb-6"
           >
-            Schedule a 30-minute walkthrough.
+            {trans.title}
           </h2>
           <p className="text-[19px] sm:text-[21px] md:text-[22px] leading-[1.7] text-[#1E2E42] font-normal">
-            Select a date and time in your local timezone. When you pick a slot, your demo details are formatted directly for Founder & CEO Kentley (<strong className="text-[#0B1728] font-bold">wongkentley@gmail.com</strong>).
+            {trans.desc}
           </p>
         </motion.div>
 
@@ -489,7 +475,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                   {CONFIG.FOUNDER_NAME || "Kentley"}
                 </span>
                 <span className="text-[14px] font-bold text-[#617594]">
-                  {CONFIG.FOUNDER_TITLE || "Founder & CEO"}
+                  {trans.founderRole}
                 </span>
               </div>
               <div className="flex items-center gap-5 text-[15px] text-[#475A70] font-medium mt-2 flex-wrap">
@@ -522,7 +508,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
               className="inline-flex items-center gap-2 bg-white hover:bg-[#E7EDF5] text-[#617594] text-[15px] font-bold px-7 py-3.5 rounded-full border border-[#617594] transition-colors shadow-xs cursor-pointer"
             >
               <MessageSquare className="w-4.5 h-4.5 text-[#617594]" />
-              <span>Direct WhatsApp Chat</span>
+              <span>{trans.directWhatsApp}</span>
             </a>
           </div>
         </motion.div>
@@ -544,49 +530,46 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                 </div>
 
                 <h3 className="text-[34px] sm:text-[44px] font-extrabold text-[#0B1728] tracking-tight mb-4 leading-tight">
-                  Walkthrough scheduled.
+                  {trans.confirmedTitle}
                 </h3>
                 <p className="text-[17px] sm:text-[18px] text-[#475A70] leading-relaxed mb-8 font-normal">
-                  Your appointment has been registered for Founder & CEO Kentley at{" "}
-                  <strong className="text-[#0B1728] font-bold">
-                    wongkentley@gmail.com
-                  </strong>. You can send a direct email confirmation or coordinate via WhatsApp.
+                  {trans.confirmedSubtitle}
                 </p>
 
                 {/* Booking Summary Box */}
                 <div className="p-6 sm:p-8 rounded-2xl bg-[#F8FAFD] border border-[#CBDDEB] mb-8 space-y-4 text-[15px] sm:text-[16px]">
                   <div className="flex justify-between items-center py-2 border-b border-[#E0EAF2]">
-                    <span className="text-[#52667A] font-medium">Date & Time</span>
+                    <span className="text-[#52667A] font-medium">{trans.summaryDateTime}</span>
                     <span className="font-bold text-[#0B1728]">
                       {confirmedBooking.date} • {confirmedBooking.timeSlot}
                     </span>
                   </div>
                   <div className="flex justify-between items-center py-2 border-b border-[#E0EAF2]">
-                    <span className="text-[#52667A] font-medium">Attendee</span>
+                    <span className="text-[#52667A] font-medium">{trans.summaryAttendee}</span>
                     <span className="font-bold text-[#0B1728]">
                       {confirmedBooking.name} ({confirmedBooking.email})
                     </span>
                   </div>
                   <div className="flex justify-between items-center py-2 border-b border-[#E0EAF2]">
-                    <span className="text-[#52667A] font-medium">Host</span>
+                    <span className="text-[#52667A] font-medium">{trans.summaryHost}</span>
                     <span className="font-bold text-[#0B1728]">
                       Kentley (Droppfloww Systems)
                     </span>
                   </div>
                   <div className="flex justify-between items-center py-2 border-b border-[#E0EAF2]">
-                    <span className="text-[#52667A] font-medium">Direct Email</span>
+                    <span className="text-[#52667A] font-medium">{trans.summaryEmail}</span>
                     <span className="text-[15px] text-[#0B1728] font-bold">
                       wongkentley@gmail.com
                     </span>
                   </div>
                   <div className="flex justify-between items-center py-2 border-b border-[#E0EAF2]">
-                    <span className="text-[#52667A] font-medium">WhatsApp Line</span>
+                    <span className="text-[#52667A] font-medium">{trans.summaryWhatsApp}</span>
                     <span className="text-[15px] text-[#0B1728] font-bold">
                       +62 858-2046-7085
                     </span>
                   </div>
                   <div className="flex justify-between items-center py-2">
-                    <span className="text-[#52667A] font-medium">Reference</span>
+                    <span className="text-[#52667A] font-medium">{trans.summaryRef}</span>
                     <span className="text-[14px] text-[#3B5B7D] font-mono">
                       {confirmedBooking.id}
                     </span>
@@ -600,7 +583,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                     className="inline-flex items-center gap-2.5 bg-[#0B1728] hover:bg-[#14253D] text-white text-[15px] font-bold px-7 py-3.5 rounded-full transition-all shadow-sm border border-[#1B2F4A] cursor-pointer"
                   >
                     <Send className="w-4 h-4 text-[#8DB8E0]" />
-                    <span>Send Email to Kentley</span>
+                    <span>{trans.btnEmailKentley}</span>
                   </a>
 
                   {confirmedBooking.googleCalendarUrl && (
@@ -611,7 +594,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                       className="inline-flex items-center gap-2 bg-[#EAF2F8] hover:bg-[#DCE9F5] text-[#0B1728] text-[15px] font-bold px-6 py-3.5 rounded-full border border-[#CBDDEB] transition-colors cursor-pointer"
                     >
                       <CalendarIcon className="w-4 h-4 text-[#3E5F82]" />
-                      <span>Add to Google Calendar</span>
+                      <span>{trans.btnGoogleCalendar}</span>
                       <ExternalLink className="w-3.5 h-3.5 opacity-70" />
                     </a>
                   )}
@@ -623,7 +606,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                     className="inline-flex items-center gap-2 bg-[#EAF2F8] hover:bg-[#DCE9F5] text-[#0B1728] text-[15px] font-bold px-6 py-3.5 rounded-full border border-[#CBDDEB] transition-colors cursor-pointer"
                   >
                     <MessageSquare className="w-4 h-4 text-[#3E5F82]" />
-                    <span>WhatsApp Kentley</span>
+                    <span>{trans.btnWhatsAppKentley}</span>
                   </a>
 
                   <button
@@ -632,7 +615,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                     className="inline-flex items-center gap-2 bg-white hover:bg-[#F8FAFD] text-[#0B1728] text-[14px] font-bold px-5 py-3.5 rounded-full border border-[#CBDDEB] transition-colors cursor-pointer"
                   >
                     <Download className="w-4 h-4 text-[#3E5F82]" />
-                    <span>Download .ICS</span>
+                    <span>{trans.btnDownloadIcs}</span>
                   </button>
 
                   <button
@@ -640,7 +623,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                     onClick={() => setConfirmedBooking(null)}
                     className="inline-flex items-center gap-1.5 text-[14px] text-[#52667A] hover:text-[#0B1728] px-3 py-3 cursor-pointer transition-colors"
                   >
-                    <span>Schedule another demo</span>
+                    <span>{trans.btnScheduleAnother}</span>
                   </button>
                 </div>
               </div>
@@ -648,7 +631,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
           ) : (
             <form onSubmit={handleBookingSubmit} noValidate>
               
-              {/* 1. WHITE-BASED CALENDAR WIDGET — High contrast, crisp, clean executive theme */}
+              {/* CALENDAR WIDGET */}
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -664,10 +647,10 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                     <div className="flex items-center justify-between mb-8">
                       <div>
                         <h3 className="text-[24px] sm:text-[26px] font-bold text-[#0B1728] tracking-tight">
-                          {MONTH_NAMES[currentMonth]} {currentYear}
+                          {trans.months[currentMonth]} {currentYear}
                         </h3>
                         <p className="text-[14px] text-[#52667A] mt-1 font-normal">
-                          Select an available date below
+                          {trans.selectDateSub}
                         </p>
                       </div>
                       <div className="flex items-center gap-2">
@@ -692,7 +675,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
 
                     {/* Day Headers */}
                     <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-3">
-                      {WEEKDAY_NAMES.map((name) => (
+                      {trans.weekdays.map((name) => (
                         <div
                           key={name}
                           className="text-center text-[12px] font-bold text-[#62768D] py-1.5 uppercase tracking-wider"
@@ -746,20 +729,20 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                     <div className="mt-8 pt-5 border-t border-[#CBDDEB] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[14px] text-[#52667A]">
                       <div className="flex items-center gap-2">
                         <Globe className="w-4 h-4 text-[#3E5F82]" />
-                        <span>Detected Timezone: <strong className="text-[#0B1728] font-semibold">{detectedTzName}</strong></span>
+                        <span>{trans.detectedTimezone}: <strong className="text-[#0B1728] font-semibold">{detectedTzName}</strong></span>
                       </div>
                       <div className="flex items-center gap-3 text-[13px]">
                         <span className="flex items-center gap-1.5">
                           <span className="w-2.5 h-2.5 rounded-full bg-[#0B1728]"></span>
-                          <span className="font-medium text-[#0B1728]">Selected</span>
+                          <span className="font-medium text-[#0B1728]">{trans.legendSelected}</span>
                         </span>
                         <span className="flex items-center gap-1.5">
                           <span className="w-2.5 h-2.5 rounded-full bg-[#D7E3EE]"></span>
-                          <span>Open</span>
+                          <span>{trans.legendOpen}</span>
                         </span>
                         <span className="flex items-center gap-1.5">
                           <span className="w-2.5 h-2.5 rounded-full bg-[#94A3B8]"></span>
-                          <span>Booked</span>
+                          <span>{trans.legendBooked}</span>
                         </span>
                       </div>
                     </div>
@@ -775,7 +758,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                             {selectedDateHeader}
                           </span>
                           <span className="text-[13px] text-[#52667A] font-normal">
-                            30-minute operational walkthrough
+                            {trans.durationNote}
                           </span>
                         </div>
 
@@ -809,7 +792,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                       {/* Timezone Switcher Dropdown */}
                       <div className="mb-6 p-4 rounded-2xl bg-white border border-[#CBDDEB] shadow-2xs">
                         <label htmlFor="tz-select" className="block text-[12px] font-bold text-[#3B5B7D] uppercase tracking-wider mb-1">
-                          Displaying times in your timezone:
+                          {trans.timezoneDropdownLabel}
                         </label>
                         <select
                           id="tz-select"
@@ -831,18 +814,18 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                           <div className="border border-[#CBDDEB] bg-white rounded-2xl p-8 flex flex-col items-center justify-center gap-3 text-center shadow-2xs">
                             <CalendarX className="w-8 h-8 text-[#52667A]" />
                             <span className="text-[18px] font-bold text-[#0B1728]">
-                              All booked.
+                              {trans.allBookedTitle}
                             </span>
                             <p className="text-[14px] text-[#52667A] max-w-xs leading-relaxed font-normal">
-                              {selectedDateHeader} has no available demo slots. Please select another date (such as Friday 2nd or Monday 5th) on the calendar.
+                              {trans.allBookedDesc(selectedDateHeader)}
                             </p>
                           </div>
                         </div>
                       ) : (
                         <div>
                           <div className="text-[13px] text-[#52667A] font-semibold mb-3 flex items-center justify-between">
-                            <span>Available Times</span>
-                            <span className="text-[#3B5B7D] font-bold">Select a slot below</span>
+                            <span>{trans.availableTimes}</span>
+                            <span className="text-[#3B5B7D] font-bold">{trans.selectSlotPrompt}</span>
                           </div>
 
                           <div className="grid grid-cols-1 gap-2.5 max-h-[300px] overflow-y-auto pr-1">
@@ -872,11 +855,11 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                                   {isChosen ? (
                                     <span className="inline-flex items-center gap-1 text-[13px] bg-white/20 px-2.5 py-1 rounded-full font-semibold">
                                       <Check className="w-3.5 h-3.5" />
-                                      <span>Selected</span>
+                                      <span>{trans.selectedBadge}</span>
                                     </span>
                                   ) : (
                                     <span className="text-[13px] text-[#3B5B7D] font-semibold">
-                                      Select →
+                                      {trans.selectArrow}
                                     </span>
                                   )}
                                 </motion.button>
@@ -889,9 +872,9 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
 
                     {/* Footer Guide inside Right Panel */}
                     <div className="mt-8 pt-4 border-t border-[#CBDDEB] flex items-center justify-between text-[14px]">
-                      <span className="text-[#52667A]">Selected Slot:</span>
+                      <span className="text-[#52667A]">{trans.selectedSlotLabel}</span>
                       <span className="font-bold text-[#0B1728]">
-                        {isSelectedDayBooked ? "Date is full" : `${selectedDateHeader} • ${activeSlot?.localLabel}`}
+                        {isSelectedDayBooked ? trans.dateIsFull : `${selectedDateHeader} • ${activeSlot?.localLabel}`}
                       </span>
                     </div>
                   </div>
@@ -906,7 +889,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                 </div>
               )}
 
-              {/* 2. ATTENDEE DETAILS FORM — Auto-scrolled and highlighted when user selects slot */}
+              {/* ATTENDEE DETAILS FORM */}
               <div
                 id="attendee-details-card"
                 ref={attendeeCardRef}
@@ -923,22 +906,26 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                     <div className="flex items-center gap-3">
                       <span className="w-2.5 h-2.5 rounded-full bg-[#3E5F82]" />
                       <span className="text-[15px] font-bold text-[#0B1728]">
-                        Selected Time: {selectedDateHeader} at {activeSlot?.localLabel} ({userTimezone.split("/").pop()?.replace(/_/g, " ")})
+                        {trans.selectedTimeBanner(
+                          selectedDateHeader,
+                          activeSlot?.localLabel || "10:30 AM",
+                          userTimezone.split("/").pop()?.replace(/_/g, " ") || "Local"
+                        )}
                       </span>
                     </div>
                     <a
                       href="#schedule-demo-heading"
                       className="text-[14px] font-bold text-[#3B5B7D] hover:text-[#0B1728] underline cursor-pointer"
                     >
-                      Change date or time
+                      {trans.changeDateTime}
                     </a>
                   </div>
 
                   <h3 className="text-[28px] sm:text-[36px] font-extrabold text-[#0B1728] mb-3 leading-snug tracking-tight">
-                    Who is joining the walkthrough?
+                    {trans.formTitle}
                   </h3>
                   <p className="text-[16px] text-[#475A70] mb-8 leading-relaxed font-normal">
-                    Complete your details below. Your request goes directly to Founder & CEO Kentley at <strong className="text-[#0B1728] font-bold">wongkentley@gmail.com</strong>.
+                    {trans.formSubtitle}
                   </p>
 
                   {/* Honeypot */}
@@ -963,7 +950,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                           htmlFor="demo-name"
                           className="block text-[14px] sm:text-[15px] font-bold text-[#0B1728] mb-2"
                         >
-                          Full name <span className="text-red-500">*</span>
+                          {trans.fullNameLabel} <span className="text-red-500">*</span>
                         </label>
                         <div className="relative">
                           <User className="w-5 h-5 text-[#62768D] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -977,7 +964,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                               setFormData({ ...formData, name: e.target.value });
                               if (errors.name) setErrors({ ...errors, name: "" });
                             }}
-                            placeholder="e.g. David Suhartono"
+                            placeholder={trans.fullNamePlaceholder}
                             className={`w-full pl-12 pr-4 py-3.5 rounded-xl border text-[15px] sm:text-[16px] bg-[#F8FAFD] text-[#0B1728] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3E5F82]/30 focus:border-[#3E5F82] ${
                               errors.name ? "border-red-400" : "border-[#CBDDEB]"
                             }`}
@@ -995,7 +982,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                           htmlFor="demo-email"
                           className="block text-[14px] sm:text-[15px] font-bold text-[#0B1728] mb-2"
                         >
-                          Work email <span className="text-red-500">*</span>
+                          {trans.workEmailLabel} <span className="text-red-500">*</span>
                         </label>
                         <div className="relative">
                           <Mail className="w-5 h-5 text-[#62768D] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -1008,7 +995,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                               setFormData({ ...formData, email: e.target.value });
                               if (errors.email) setErrors({ ...errors, email: "" });
                             }}
-                            placeholder="david@company.com"
+                            placeholder={trans.workEmailPlaceholder}
                             className={`w-full pl-12 pr-4 py-3.5 rounded-xl border text-[15px] sm:text-[16px] bg-[#F8FAFD] text-[#0B1728] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3E5F82]/30 focus:border-[#3E5F82] ${
                               errors.email ? "border-red-400" : "border-[#CBDDEB]"
                             }`}
@@ -1029,7 +1016,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                           htmlFor="demo-company"
                           className="block text-[14px] sm:text-[15px] font-bold text-[#0B1728] mb-2"
                         >
-                          Company / Firm
+                          {trans.companyLabel}
                         </label>
                         <div className="relative">
                           <Building2 className="w-5 h-5 text-[#62768D] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -1040,7 +1027,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                             onChange={(e) =>
                               setFormData({ ...formData, company: e.target.value })
                             }
-                            placeholder="e.g. Mitra Logistik / Bestindo"
+                            placeholder={trans.companyPlaceholder}
                             className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-[#CBDDEB] text-[15px] sm:text-[16px] bg-[#F8FAFD] text-[#0B1728] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3E5F82]/30 focus:border-[#3E5F82]"
                           />
                         </div>
@@ -1051,7 +1038,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                           htmlFor="demo-phone"
                           className="block text-[14px] sm:text-[15px] font-bold text-[#0B1728] mb-2"
                         >
-                          WhatsApp / Phone
+                          {trans.phoneLabel}
                         </label>
                         <div className="relative">
                           <Phone className="w-5 h-5 text-[#62768D] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -1062,7 +1049,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                             onChange={(e) =>
                               setFormData({ ...formData, phone: e.target.value })
                             }
-                            placeholder="e.g. +62 812-3456-7890"
+                            placeholder={trans.phonePlaceholder}
                             className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-[#CBDDEB] text-[15px] sm:text-[16px] bg-[#F8FAFD] text-[#0B1728] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#3E5F82]/30 focus:border-[#3E5F82]"
                           />
                         </div>
@@ -1072,10 +1059,10 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                     {/* Platform Selector */}
                     <div>
                       <label className="block text-[14px] sm:text-[15px] font-bold text-[#0B1728] mb-2.5">
-                        Meeting Medium
+                        {trans.platformLabel}
                       </label>
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                        {PLATFORMS.map((p) => {
+                        {trans.platforms.map((p) => {
                           const isSelected = selectedPlatform === p.id;
                           return (
                             <button
@@ -1107,36 +1094,30 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                           htmlFor="demo-topic"
                           className="block text-[14px] sm:text-[15px] font-bold text-[#0B1728]"
                         >
-                          Which workflow or bottleneck should we review?
+                          {trans.focusQuestion}
                         </label>
                         <span className="text-[13px] text-[#52667A]">
-                          Select a sector or write your own
+                          {trans.focusSectorHint}
                         </span>
                       </div>
 
                       {/* Quick Sector Chips */}
                       <div className="flex flex-wrap gap-2 mb-3">
-                        {[
-                          "Offices & Operations (admin, finance, CRM)",
-                          "Engineering & Infrastructure (drawings, BOQ, estimating)",
-                          "Education (admissions, scheduling, communication)",
-                          "Healthcare (clinics, reception, follow-up)",
-                          "Logistics (inventory, dispatch, order flow)",
-                        ].map((chip) => (
+                        {trans.sectorChips.map((chip) => (
                           <button
-                            key={chip}
+                            key={chip.id}
                             type="button"
                             onClick={() => {
                               setFormData((prev) => ({
                                 ...prev,
                                 topic: prev.topic
-                                  ? `${prev.topic} • ${chip}`
-                                  : `We need help with ${chip}`,
+                                  ? `${prev.topic} • ${chip.full}`
+                                  : `${chip.full}`,
                               }));
                             }}
                             className="text-[13px] px-3.5 py-1.5 bg-[#EAF2F8] hover:bg-[#DCE9F5] text-[#0B1728] font-medium rounded-full border border-[#CBDDEB] transition-colors cursor-pointer"
                           >
-                            + {chip.split(" (")[0]}
+                            + {chip.label}
                           </button>
                         ))}
                       </div>
@@ -1148,7 +1129,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                         onChange={(e) =>
                           setFormData({ ...formData, topic: e.target.value })
                         }
-                        placeholder="e.g. Connecting drawing file estimates to customer proposals, automating WhatsApp order receipts into ERP, or streamlining field job updates..."
+                        placeholder={trans.topicPlaceholder}
                         className="w-full px-4 py-3.5 rounded-xl border border-[#CBDDEB] text-[15px] sm:text-[16px] bg-[#F8FAFD] text-[#0B1728] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#617594]/30 focus:border-[#617594] resize-y font-normal"
                       />
                     </div>
@@ -1156,7 +1137,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                     {/* Dispatch Notice & Primary CTA */}
                     <div className="pt-6 border-t border-[#CBDDEB]">
                       <div className="p-4 rounded-xl bg-[#F8FAFD] border border-[#CBDDEB] mb-6 text-[14px] text-[#52667A] leading-relaxed font-normal">
-                        Direct confirmation with Founder & CEO Kentley (<strong className="text-[#0B1728] font-semibold">wongkentley@gmail.com</strong>). A calendar invite will be prepared for immediate dispatch.
+                        {trans.dispatchNotice}
                       </div>
 
                       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
@@ -1171,11 +1152,11 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                           {isSubmitting ? (
                             <>
                               <RefreshCw className="w-5 h-5 animate-spin text-white" />
-                              <span>Routing demo details to Kentley...</span>
+                              <span>{trans.submittingButton}</span>
                             </>
                           ) : (
                             <>
-                              <span>Confirm & Schedule Walkthrough</span>
+                              <span>{trans.submitButton}</span>
                               <ArrowRight className="w-5 h-5 text-white" />
                             </>
                           )}
@@ -1188,7 +1169,7 @@ export const BookCallSection: React.FC<BookCallSectionProps> = ({ id = "book-cal
                           className="inline-flex items-center justify-center gap-2 text-[15px] font-bold text-[#617594] hover:text-[#50637F] px-5 py-4 cursor-pointer transition-colors"
                         >
                           <MessageSquare className="w-4 h-4 text-[#617594]" />
-                          <span>Or coordinate on WhatsApp</span>
+                          <span>{trans.coordinateWhatsApp}</span>
                         </a>
                       </div>
                     </div>

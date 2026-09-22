@@ -1,0 +1,192 @@
+export const es = {
+  // Navigation
+  nav: {
+    overview: "Resumen",
+    whatWeBuild: "Lo Que Construimos",
+    howWeWork: "Cómo Trabajamos",
+    whyDroppfloww: "Por Qué Droppfloww",
+    clientReviews: "Casos y Opiniones",
+    scheduleDemo: "Agendar Demostración",
+    directFounder: "Trato Directo con el Fundador",
+    privacy: "Aviso de Privacidad",
+    menu: "Menú",
+    close: "Cerrar",
+    language: "Idioma",
+  },
+
+  // Hero
+  hero: {
+    badge: "Droppfloww Systems • Ingeniería Operativa a Medida",
+    title: "Haga más sin contratar más personal.",
+    subtitleLead: "Detectamos exactamente dónde su operación pierde tiempo y diseñamos el sistema que",
+    subtitleHighlight: "lo elimina.",
+    body: "Droppfloww Systems desarrolla software operativo personalizado adaptado a la forma real en que trabaja su empresa: unificando herramientas aisladas, erradicando tareas administrativas repetitivas y manteniendo las decisiones críticas en manos de su equipo.",
+    primaryCta: "Agendar una demostración",
+    secondaryCta: "Ver sistemas que construimos",
+    liveIndicator: "Arquitectura operativa interactiva en vivo",
+    trustedBy: "Diseñado para empresas de servicios, operaciones de campo y flujos de trabajo en crecimiento",
+  },
+
+  // Problem Section
+  problem: {
+    badge: "Realidad Operativa",
+    headlineMain: "Menos trabajo repetitivo.",
+    headlineSub: "Más trabajo de alto valor.",
+    lead: "Copiar los mismos datos en otra hoja de cálculo. Buscar la versión más reciente de un archivo. Dar seguimiento a una aprobación que debió salir ayer. Las pequeñas tareas manuales silenciosamente devoran gran parte de la semana laboral.",
+    callout: "Comenzamos justo en ese punto.",
+    item1Num: "Problema 01",
+    item1Title: "Hojas de cálculo dirigiendo el negocio",
+    item1Desc: "Las hojas de cálculo son flexibles, pero carecen de controles. Las fórmulas se rompen, los archivos duplicados se multiplican y el historial crítico queda disperso en carpetas personales.",
+    item1Impact: "Impacto: Alto riesgo de discrepancias en datos y cientos de horas perdidas conciliando reportes.",
+    item2Num: "Problema 02",
+    item2Title: "Entregas internas que pierden detalles clave",
+    item2Desc: "Pasar trabajo de ventas a operaciones, o de la oficina al equipo en campo, a menudo depende de la memoria o de caóticos hilos de chat. Las solicitudes del cliente se quedan en el camino.",
+    item2Impact: "Impacto: Plazos vencidos, clientes insatisfechos y desgaste constante dentro del equipo.",
+    item3Num: "Problema 03",
+    item3Title: "Elaborar reportes toma días en lugar de segundos",
+    item3Desc: "Cuando la dirección requiere datos sobre rentabilidad por proyecto, disponibilidad de cuadrillas o salud de la cartera, el equipo tarda días armando reportes manualmente.",
+    item3Impact: "Impacto: Decisiones estratégicas demoradas y liderazgo operando a ciegas.",
+  },
+
+  // What We Build
+  whatWeBuild: {
+    badge: "Arquitectura Operativa a Medida",
+    title: "Sistemas diseñados según su forma real de operar",
+    subtitle: "No le obligamos a encajar en un software comercial genérico y saturado. Diseñamos centros operativos ligeros, sólidos y perfectamente ajustados a su flujo de trabajo.",
+    cat1Title: "Comando Central de Proyectos y Operaciones",
+    cat1Desc: "Visibilidad integral y sincronizada de proyectos activos, fechas límite, asignación de cuadrillas y consumo de presupuesto en una sola interfaz.",
+    cat2Title: "Motores de Automatización de Flujos Internos",
+    cat2Desc: "Colas de aprobación a medida, traspasos automatizados, generadores de documentos y notificaciones inteligentes para avanzar sin recordatorios manuales.",
+    cat3Title: "Portales de Autoservicio para Clientes",
+    cat3Desc: "Portales intuitivos con su marca donde los clientes pueden consultar el avance de sus entregables, revisar facturas, aprobar fases y subir documentación.",
+    cat4Title: "Sistemas de Despacho y Operaciones en Campo",
+    cat4Desc: "Tableros de asignación optimizados para móvil, listas de verificación fotográfica en sitio, registro con sellos de tiempo y sincronización inmediata con oficina.",
+    ctaExplore: "Explorar especificaciones arquitectónicas completas",
+    ctaConsult: "Agendar llamada de evaluación técnica",
+  },
+
+  // How We Work
+  howWeWork: {
+    badge: "Metodología Disciplinada",
+    title: "4 etapas claras. Entregables concretos en cada paso.",
+    subtitle: "Evitamos consultorías interminables o promesas abstractas. Cada fase produce software funcional tangible y mejoras cuantificables en su operación.",
+    stage1Num: "01",
+    stage1Name: "Descubrimiento Operativo",
+    stage1Desc: "Mapeamos sus procesos actuales, observamos el trabajo diario del equipo e identificamos los cuellos de botella exactos que consumen tiempo.",
+    stage1Deliverable: "Mapa Visual de Procesos y Esquema de Arquitectura",
+    stage2Num: "02",
+    stage2Name: "Prototipado y Validación",
+    stage2Desc: "Construimos un prototipo funcional en menos de 10 días hábiles, validando estructuras con datos reales y sus operadores clave.",
+    stage2Deliverable: "Prototipo Interactivo y Modelo de Base de Datos",
+    stage3Num: "03",
+    stage3Name: "Ingeniería de Producción",
+    stage3Desc: "Desarrollamos el sistema completo con permisos por roles, sincronización en tiempo real y disparadores automáticos a prueba de fallos.",
+    stage3Deliverable: "Sistema de Producción Completo e Integraciones",
+    stage4Num: "04",
+    stage4Name: "Capacitación y Propiedad Total",
+    stage4Desc: "Capacitamos a su personal, brindamos soporte presencial en el lanzamiento y transferimos el 100% de la propiedad intelectual sin tarifas recurrentes.",
+    stage4Deliverable: "Videos de Capacitación, Documentación y Código 100% Suyo",
+    ctaStart: "Comenzar con la primera etapa",
+  },
+
+  // Why Droppfloww
+  whyDroppfloww: {
+    badge: "La Diferencia Droppfloww",
+    title: "Construido según su realidad, no atado a licencias",
+    subtitle: "Por qué empresas de servicios con visión de futuro eligen ingeniería personalizada frente a suscripciones SaaS mensuales que nunca se ajustan del todo.",
+    pillar1Title: "Ingeniería Directa con el Fundador",
+    pillar1Desc: "Sin ejecutivos de cuenta ni intermediarios sin experiencia. Trabaja mano a mano con Kentley, nuestro fundador y arquitecto principal.",
+    pillar2Title: "Cero Cobros por Usuario Mensual",
+    pillar2Desc: "El sistema es suyo. Agregue 5 o 500 colaboradores sin pagar costos mensuales arbitrarios por cada usuario adicional.",
+    pillar3Title: "100% Adaptado a sus Procesos Reales",
+    pillar3Desc: "Cada campo, estado y flujo automatizado se crea estrictamente según lo que hace exitoso a su equipo, no según plantillas estándar.",
+    comparisonMetric: "Comparativa de Características",
+    droppflowwCol: "Droppfloww Systems",
+    genericCol: "SaaS Genérico (ClickUp/Airtable)",
+    agencyCol: "Agencia de Software Tradicional",
+    ctaFounder: "Hable directamente con el fundador",
+  },
+
+  // Client Reviews
+  reviews: {
+    badge: "Casos de Éxito Verificados",
+    title: "Operaciones reales transformadas. Resultados medibles.",
+    subtitle: "Conozca cómo empresas de servicios especializados y operaciones de campo eliminaron cientos de horas de trabajo manual cada mes.",
+    verifiedBadge: "Compromiso de Cliente Verificado",
+    timelineLabel: "Tiempo de Entrega",
+    metricLabel: "Impacto Medido",
+    viewCaseStudy: "Ver caso de estudio",
+    ctaReview: "Agendar revisión operativa",
+  },
+
+  // Booking & Schedule
+  booking: {
+    badge: "Trato Directo con el Fundador",
+    title: "Agende una Sesión Operativa de 30 Minutos",
+    subtitle: "Cuéntenos el cuello de botella repetitivo de su empresa. Kentley le presentará una arquitectura operativa a medida y evaluará la viabilidad técnica—sin costo.",
+    selectPlatform: "1. Seleccione el Formato de Reunión",
+    selectDate: "2. Seleccione la Fecha",
+    selectTime: "3. Seleccione el Horario (Hora Local)",
+    topicLabel: "¿Qué proceso operativo le gustaría optimizar? (Opcional)",
+    topicPlaceholder: "Ej: Conectar cotizaciones a despachos de campo, reportes semanales automáticos o gestión de pedidos vía WhatsApp...",
+    nameLabel: "Su Nombre Completo",
+    emailLabel: "Correo Corporativo",
+    companyLabel: "Empresa / Organización",
+    phoneLabel: "Teléfono / WhatsApp (Opcional)",
+    submitBtn: "Confirmar y Agendar Demostración",
+    submitting: "Reservando su espacio en el calendario...",
+    successTitle: "¡Demostración Confirmada!",
+    successMsg: "Hemos preparado la invitación de calendario con los enlaces correspondientes. Esperamos analizar su operación con usted.",
+    whatsappAlternative: "¿Prefiere coordinar directamente por WhatsApp?",
+    chatOnWhatsapp: "Chatear directamente en WhatsApp",
+    availableSlots: "horarios disponibles",
+    noSlots: "Sin cupos en esta fecha. Por favor seleccione otro día.",
+  },
+
+  // Contact Section
+  contact: {
+    badge: "Evaluación de Viabilidad y Alcance",
+    title: "Cuéntenos sobre sus operaciones",
+    subtitle: "¿Tiene un proyecto o flujo específico en mente? Comparta los detalles a continuación. Kentley revisa personalmente cada solicitud en menos de 24 horas.",
+    nameLabel: "Nombre Completo",
+    emailLabel: "Correo Corporativo",
+    companyLabel: "Nombre de su Empresa",
+    serviceLabel: "Área de Enfoque Operativo",
+    detailsLabel: "Describa las tareas repetitivas o cuellos de botella que consumen el tiempo del equipo",
+    detailsPlaceholder: "Ej: Transcribir especificaciones de planos, coordinar técnicos por grupos de chat, conciliar facturas a mano...",
+    submitBtn: "Enviar Solicitud de Evaluación",
+    submitting: "Enviando detalles...",
+    successTitle: "Solicitud Recibida",
+    successMsg: "Gracias por compartir sus flujos operativos. Kentley evaluará la viabilidad y le responderá directamente en menos de 24 horas.",
+    directEmailLabel: "Correo Directo del Fundador",
+    whatsappLabel: "WhatsApp Directo",
+  },
+
+  // FAQ
+  faq: {
+    badge: "Preguntas Frecuentes",
+    title: "Todo lo que necesita saber sobre trabajar con nosotros",
+    subtitle: "Respuestas transparentes sobre plazos, modelos de inversión, propiedad del código e integraciones técnicas.",
+  },
+
+  // Footer
+  footer: {
+    tagline: "Software operativo a medida diseñado para impulsar la forma real en que su negocio opera y crece.",
+    navHeading: "Navegación",
+    systemsHeading: "Arquitecturas de Sistemas",
+    directContactHeading: "Contacto Directo",
+    rights: "Todos los derechos reservados. Droppfloww Systems.",
+    privacyNotice: "Aviso de Privacidad",
+    switchLanguage: "Cambiar Idioma:",
+  },
+
+  // Common UI
+  common: {
+    loading: "Cargando...",
+    close: "Cerrar",
+    back: "Volver",
+    learnMore: "Conocer más",
+    getStarted: "Comenzar",
+    viewAll: "Ver todo",
+  },
+};

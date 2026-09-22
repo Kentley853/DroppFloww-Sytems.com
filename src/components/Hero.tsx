@@ -3,12 +3,15 @@ import { analytics } from "../config";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { motion } from "motion/react";
 import { SectorDemoConsole } from "./SectorDemoConsole";
+import { useLanguage } from "../i18n/LanguageContext";
 
 interface HeroProps {
   onNavigate?: (page: string) => void;
 }
 
 export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
+  const { t, language } = useLanguage();
+
   const handleCta = (page: string, ctaName: string) => {
     analytics.trackCtaClick(ctaName);
     if (onNavigate) {
@@ -17,6 +20,13 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       const el = document.getElementById(page === "schedule-demo" ? "book-call" : "services");
       el?.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  const directLineLabels: Record<string, string> = {
+    en: "Direct line with Founder & CEO Kentley:",
+    id: "Jalur langsung bersama Pendiri & CEO Kentley:",
+    zh: "创始人兼首席执行官 Kentley 直通联系：",
+    es: "Línea directa con el Fundador y CEO Kentley:",
   };
 
   return (
@@ -47,7 +57,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
             className="inline-flex items-center gap-2.5 px-4.5 py-2 rounded-full bg-[#E7EDF5] border border-[#CBDDEB] text-[#617594] text-[13px] sm:text-[14px] font-bold uppercase tracking-[0.14em] mb-8 shadow-2xs"
           >
             <img src="/df-monogram.svg" alt="" className="w-4.5 h-4.5 object-contain" />
-            <span>Droppfloww Systems • Custom Operational Engineering</span>
+            <span>{t("hero.badge", "Droppfloww Systems • Custom Operational Engineering")}</span>
           </motion.div>
 
           {/* Monumental Headline */}
@@ -56,9 +66,9 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-            className="text-[56px] sm:text-[80px] md:text-[104px] lg:text-[124px] xl:text-[136px] font-extrabold text-[#0B1728] tracking-[-0.045em] leading-[0.9] mb-12 md:mb-16"
+            className="text-[54px] sm:text-[76px] md:text-[98px] lg:text-[118px] xl:text-[130px] font-extrabold text-[#0B1728] tracking-[-0.045em] leading-[0.92] mb-12 md:mb-16"
           >
-            Do more without hiring more.
+            {t("hero.title", "Do more without hiring more.")}
           </motion.h1>
 
           {/* Clear Typographic Hierarchy Split */}
@@ -70,15 +80,16 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
           >
             {/* Dominant Subtitle Statement */}
             <div className="lg:col-span-6">
-              <p className="text-[28px] sm:text-[34px] md:text-[40px] font-extrabold text-[#0B1728] tracking-[-0.03em] leading-[1.18]">
-                We find where your operations lose time, then engineer the system that <span className="text-[#617594]">removes it.</span>
+              <p className="text-[26px] sm:text-[32px] md:text-[38px] font-extrabold text-[#0B1728] tracking-[-0.03em] leading-[1.2]">
+                {t("hero.subtitleLead", "We find where your operations lose time, then engineer the system that")}{" "}
+                <span className="text-[#617594]">{t("hero.subtitleHighlight", "removes it.")}</span>
               </p>
             </div>
 
             {/* Explanatory Body Copy & Refined CTAs */}
             <div className="lg:col-span-6">
-              <p className="text-[19px] sm:text-[21px] md:text-[22px] leading-[1.7] text-[#1E2E42] font-normal max-w-[58ch] mb-10">
-                Droppfloww Systems builds custom operational software around how your business already works—connecting fragmented tools, eliminating repetitive clerical drag, and keeping important decisions in human hands.
+              <p className="text-[18px] sm:text-[20px] md:text-[21px] leading-[1.7] text-[#1E2E42] font-normal max-w-[58ch] mb-10">
+                {t("hero.body", "Droppfloww Systems builds custom operational software around how your business already works—connecting fragmented tools, eliminating repetitive clerical drag, and keeping important decisions in human hands.")}
               </p>
 
               {/* Action Buttons */}
@@ -89,7 +100,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                   onClick={() => handleCta("schedule-demo", "hero_schedule_demo")}
                   className="inline-flex items-center justify-center bg-[#617594] hover:bg-[#50637F] text-white text-[16px] sm:text-[17px] font-bold px-8 sm:px-9 py-4 sm:py-4.5 rounded-full shadow-[0_4px_18px_rgba(97,117,148,0.28)] hover:shadow-[0_8px_26px_rgba(97,117,148,0.38)] transition-all duration-200 hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#617594] cursor-pointer"
                 >
-                  <span>Schedule a walkthrough</span>
+                  <span>{t("hero.primaryCta", "Schedule a walkthrough")}</span>
                   <ArrowRight className="w-4.5 h-4.5 ml-2" />
                 </button>
 
@@ -99,15 +110,15 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                   onClick={() => handleCta("what-we-build", "hero_view_systems")}
                   className="group inline-flex items-center gap-2 text-[16px] sm:text-[17px] font-bold text-[#0B1728] hover:text-[#617594] bg-white hover:bg-[#E7EDF5]/40 border border-[#CBDDEB] hover:border-[#617594] rounded-full px-7 sm:px-8 py-4 sm:py-4.5 transition-all duration-200 hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#617594] cursor-pointer shadow-2xs hover:shadow-xs"
                 >
-                  <span>Explore what we build</span>
+                  <span>{t("hero.secondaryCta", "See what we build")}</span>
                   <span className="text-[#617594] transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
                 </button>
               </div>
 
               {/* Founder Direct Line Channel */}
-              <div className="mt-8 text-[15px] sm:text-[16px] text-[#1E2E42] font-normal flex items-center gap-2.5">
+              <div className="mt-8 text-[14px] sm:text-[15px] text-[#1E2E42] font-normal flex flex-wrap items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0" />
-                <span>Direct line with Founder & CEO Kentley:</span>
+                <span>{directLineLabels[language] || directLineLabels.en}</span>
                 <a
                   href="https://wa.me/6285820467085"
                   target="_blank"
@@ -140,3 +151,4 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
     </section>
   );
 };
+

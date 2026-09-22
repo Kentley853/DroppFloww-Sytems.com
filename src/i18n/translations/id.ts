@@ -1,0 +1,192 @@
+export const id = {
+  // Navigation
+  nav: {
+    overview: "Ringkasan",
+    whatWeBuild: "Solusi Kami",
+    howWeWork: "Cara Kerja",
+    whyDroppfloww: "Mengapa Droppfloww",
+    clientReviews: "Ulasan Klien",
+    scheduleDemo: "Jadwalkan Konsultasi",
+    directFounder: "Terhubung Langsung dengan Pendiri",
+    privacy: "Kebijakan Privasi",
+    menu: "Menu",
+    close: "Tutup",
+    language: "Bahasa",
+  },
+
+  // Hero
+  hero: {
+    badge: "Droppfloww Systems • Rekayasa Operasional Kustom",
+    title: "Lakukan lebih banyak tanpa menambah staf.",
+    subtitleLead: "Kami temukan di mana operasional Anda kehilangan waktu, lalu rekayasa sistem yang",
+    subtitleHighlight: "menghilangkannya.",
+    body: "Droppfloww Systems membangun perangkat lunak operasional kustom sesuai alur kerja nyata bisnis Anda—menghubungkan aplikasi yang terfragmentasi, memangkas pekerjaan administratif yang berulang, dan menjaga kendali keputusan penting tetap di tangan tim Anda.",
+    primaryCta: "Jadwalkan konsultasi",
+    secondaryCta: "Lihat sistem yang kami bangun",
+    liveIndicator: "Arsitektur operasional interaktif langsung",
+    trustedBy: "Dirancang untuk bisnis jasa, operasional lapangan, dan alur kerja berkembang",
+  },
+
+  // Problem Section
+  problem: {
+    badge: "Realita Operasional",
+    headlineMain: "Kurangi pekerjaan repetitif.",
+    headlineSub: "Fokus pada pekerjaan berdampak.",
+    lead: "Menyalin data yang sama ke spreadsheet lain. Mencari revisi file terbaru. Menindaklanjuti persetujuan yang seharusnya sudah selesai kemarin. Tugas-tugas kecil diam-diam menghabiskan sebagian besar jam kerja tim Anda.",
+    callout: "Kami mulai tepat di sana.",
+    item1Num: "Masalah 01",
+    item1Title: "Spreadsheet mengendalikan bisnis Anda",
+    item1Desc: "Spreadsheet memang fleksibel, tetapi tanpa batasan kendali. Rumus mudah rusak, duplikasi file terjadi di mana-mana, dan riwayat penting perusahaan tersimpan acak di drive pribadi.",
+    item1Impact: "Dampak: Risiko tinggi perbedaan data dan waktu terbuang untuk mencocokkan laporan.",
+    item2Num: "Masalah 02",
+    item2Title: "Operan tugas menghilangkan detail penting",
+    item2Desc: "Menyerahkan pekerjaan dari tim penjualan ke operasional, atau dari kantor ke tim lapangan sering kali hanya mengandalkan ingatan atau obrolan chat yang berantakan.",
+    item2Impact: "Dampak: Batas waktu terlewat, pelanggan kecewa, dan timbal balik internal yang memicu stres.",
+    item3Num: "Masalah 03",
+    item3Title: "Laporan butuh waktu berhari-hari",
+    item3Desc: "Saat pimpinan membutuhkan jawaban terkait margin proyek, ketersediaan tim, atau performa alur kerja, staf menghabiskan berhari-hari menyusun laporan secara manual.",
+    item3Impact: "Dampak: Keputusan strategis terlambat dan manajemen berjalan tanpa kepastian data.",
+  },
+
+  // What We Build
+  whatWeBuild: {
+    badge: "Arsitektur Operasional Kustom",
+    title: "Sistem yang direkayasa sesuai cara Anda beroperasi",
+    subtitle: "Kami tidak memaksakan Anda menggunakan aplikasi kaku siap pakai. Kami merancang pusat operasional ringan dan tangguh yang sesuai persis dengan kebutuhan alur kerja Anda.",
+    cat1Title: "Pusat Kendali Proyek & Operasional",
+    cat1Desc: "Visibilitas terpusat untuk proyek aktif, tenggat waktu, tonggak pencapaian, penugasan tim lapangan, dan penggunaan anggaran dalam satu antarmuka tersinkronisasi.",
+    cat2Title: "Mesin Otomatisasi Alur Kerja Internal",
+    cat2Desc: "Antrean persetujuan kustom, serah terima pekerjaan otomatis, generator dokumen, dan notifikasi cerdas agar pekerjaan terus berjalan tanpa perlu pengingat manual terus-menerus.",
+    cat3Title: "Portal Mandiri Pelanggan",
+    cat3Desc: "Portal bermerek yang intuitif di mana klien dapat memantau progres pekerjaan, meninjau faktur, menyetujui tahapan proyek, dan mengunggah dokumen dengan mudah.",
+    cat4Title: "Sistem Manajemen & Disposisi Lapangan",
+    cat4Desc: "Papan dispatch yang ramah ponsel, daftar periksa verifikasi foto lapangan, penyelesaian tugas dengan tanda waktu akurat, dan sinkronisasi instan ke kantor pusat.",
+    ctaExplore: "Jelajahi spesifikasi teknis lengkap",
+    ctaConsult: "Jadwalkan konsultasi arsitektur sistem",
+  },
+
+  // How We Work
+  howWeWork: {
+    badge: "Metodologi Disiplin",
+    title: "4 tahapan terukur. Hasil nyata di setiap langkah.",
+    subtitle: "Kami tidak berputar pada siklus konsultasi berbelit-belit atau janji peta jalan yang abstrak. Setiap fase menghasilkan kode nyata dan peningkatan efisiensi yang terbukti.",
+    stage1Num: "01",
+    stage1Name: "Eksplorasi Operasional",
+    stage1Desc: "Kami memetakan proses Anda saat ini, menganalisis alur kerja harian tim, dan menemukan sumber hambatan utama yang menyita waktu staf Anda.",
+    stage1Deliverable: "Peta Alur Kerja Visual & Cetak Biru Arsitektur",
+    stage2Num: "02",
+    stage2Name: "Prototipe & Validasi",
+    stage2Desc: "Kami merakit prototipe yang berfungsi dalam waktu 10 hari kerja, menguji struktur data nyata bersama para operator kunci Anda.",
+    stage2Deliverable: "Prototipe Sistem yang Dapat Diklik & Model Skema",
+    stage3Num: "03",
+    stage3Name: "Rekayasa Produksi",
+    stage3Desc: "Kami membangun sistem menyeluruh dengan kontrol hak akses aman, sinkronisasi basis data real-time, dan pemicu otomatisasi yang andal.",
+    stage3Deliverable: "Sistem Produksi Siap Pakai & Integrasi Lengkap",
+    stage4Num: "04",
+    stage4Name: "Pelatihan & Kepemilikan Penuh",
+    stage4Desc: "Kami melatih tim Anda, mendampingi langsung selama peluncuran, dan menyerahkan 100% kepemilikan kode tanpa keterikatan langganan.",
+    stage4Deliverable: "Video Pelatihan Operator, Dokumentasi & Kepemilikan Kode 100%",
+    ctaStart: "Mulai dengan langkah pertama",
+  },
+
+  // Why Droppfloww
+  whyDroppfloww: {
+    badge: "Keunggulan Droppfloww",
+    title: "Dibangun untuk realitas Anda, bukan keterikatan langganan",
+    subtitle: "Mengapa bisnis jasa visioner memilih rekayasa operasional khusus dibandingkan langganan SaaS bulanan yang tidak pernah pas.",
+    pillar1Title: "Dikerjakan Langsung oleh Pendiri",
+    pillar1Desc: "Tanpa perantara manajer akun atau staf junior. Anda bekerja langsung bersama Kentley, pendiri dan arsitek sistem utama kami.",
+    pillar2Title: "Tanpa Biaya Lisensi Per Karyawan",
+    pillar2Desc: "Anda memiliki sistem ini sepenuhnya. Tambahkan 5 atau 500 anggota tim tanpa beban biaya tambahan per pengguna setiap bulannya.",
+    pillar3Title: "100% Dirancang Sesuai Alur Kerja Anda",
+    pillar3Desc: "Setiap kolom formulir, status progres, dan otomatisasi dibangun khusus mengikuti cara kerja tim Anda, bukan cetakan generik.",
+    comparisonMetric: "Perbandingan Fitur",
+    droppflowwCol: "Droppfloww Systems",
+    genericCol: "SaaS Generik (ClickUp/Airtable)",
+    agencyCol: "Agensi Korporat Tradisional",
+    ctaFounder: "Bicara langsung dengan pendiri kami",
+  },
+
+  // Client Reviews
+  reviews: {
+    badge: "Ulasan Klien Terverifikasi",
+    title: "Transformasi operasional nyata. Hasil terukur.",
+    subtitle: "Pelajari bagaimana perusahaan jasa dan operasi lapangan menghemat ratusan jam kerja manual setiap bulannya.",
+    verifiedBadge: "Kemitraan Klien Terverifikasi",
+    timelineLabel: "Durasi Pengerjaan",
+    metricLabel: "Hasil Terukur",
+    viewCaseStudy: "Lihat studi kasus",
+    ctaReview: "Jadwalkan review operasional",
+  },
+
+  // Booking & Schedule
+  booking: {
+    badge: "Konsultasi Langsung dengan Pendiri",
+    title: "Jadwalkan Diskusi Operasional 30 Menit",
+    subtitle: "Bagikan tantangan pekerjaan berulang di bisnis Anda. Kentley akan memaparkan rancangan arsitektur operasional yang relevan dan mengevaluasi kelayakan teknis—gratis.",
+    selectPlatform: "1. Pilih Media Pertemuan",
+    selectDate: "2. Pilih Tanggal",
+    selectTime: "3. Pilih Jam (Waktu Lokal Anda)",
+    topicLabel: "Proses operasional apa yang ingin Anda sederhanakan? (Opsional)",
+    topicPlaceholder: "Contoh: Menghubungkan estimasi harga ke penugasan lapangan, laporan otomatis mingguan, atau alur pesanan WhatsApp...",
+    nameLabel: "Nama Lengkap",
+    emailLabel: "Email Kerja",
+    companyLabel: "Nama Perusahaan / Organisasi",
+    phoneLabel: "Nomor Telepon / WhatsApp (Opsional)",
+    submitBtn: "Konfirmasi & Jadwalkan Sesi",
+    submitting: "Mengamankan jadwal Anda...",
+    successTitle: "Jadwal Berhasil Dikonfirmasi!",
+    successMsg: "Undangan kalender beserta tautan pertemuan telah disiapkan. Kami sangat menantikan sesi telaah operasional Anda.",
+    whatsappAlternative: "Lebih suka chat WhatsApp langsung?",
+    chatOnWhatsapp: "Hubungi langsung di WhatsApp",
+    availableSlots: "slot tersedia",
+    noSlots: "Jadwal penuh untuk hari ini. Silakan pilih tanggal lain.",
+  },
+
+  // Contact Section
+  contact: {
+    badge: "Analisis Kelayakan & Desain Solusi",
+    title: "Ceritakan tentang operasional Anda",
+    subtitle: "Punya proyek atau alur kerja yang ingin diotomatisasi? Kirimkan detail hambatan Anda di bawah ini. Kentley meninjau setiap pengajuan secara pribadi dalam 24 jam.",
+    nameLabel: "Nama Lengkap",
+    emailLabel: "Email Kerja",
+    companyLabel: "Nama Perusahaan",
+    serviceLabel: "Fokus Bidang Operasional",
+    detailsLabel: "Jelaskan tugas repetitif atau hambatan yang menyita waktu tim",
+    detailsPlaceholder: "Contoh: Mengetik ulang data kontraktor, koordinasi teknisi lapangan via chat grup, mencocokkan faktur manual...",
+    submitBtn: "Kirim Permintaan Konsultasi",
+    submitting: "Mengirimkan data...",
+    successTitle: "Permintaan Diterima",
+    successMsg: "Terima kasih telah membagikan alur kerja Anda. Kentley akan mengevaluasi kelayakannya dan membalas dalam waktu 24 jam.",
+    directEmailLabel: "Email Langsung Pendiri",
+    whatsappLabel: "WhatsApp Langsung",
+  },
+
+  // FAQ
+  faq: {
+    badge: "Pertanyaan yang Sering Diajukan",
+    title: "Segala hal yang perlu Anda ketahui tentang bermitra dengan kami",
+    subtitle: "Jawaban transparan mengenai jadwal pengerjaan, model biaya, kepemilikan sistem, dan integrasi teknis.",
+  },
+
+  // Footer
+  footer: {
+    tagline: "Perangkat lunak operasional kustom yang direkayasa agar bisnis Anda berkembang lebih cepat.",
+    navHeading: "Navigasi",
+    systemsHeading: "Arsitektur Sistem",
+    directContactHeading: "Kontak Langsung",
+    rights: "Hak cipta dilindungi undang-undang. Droppfloww Systems.",
+    privacyNotice: "Kebijakan Privasi",
+    switchLanguage: "Ganti Bahasa:",
+  },
+
+  // Common UI
+  common: {
+    loading: "Memuat...",
+    close: "Tutup",
+    back: "Kembali",
+    learnMore: "Pelajari lebih lanjut",
+    getStarted: "Mulai sekarang",
+    viewAll: "Lihat semua",
+  },
+};

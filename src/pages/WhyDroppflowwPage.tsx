@@ -1,45 +1,93 @@
-import React from "react";
-import { ArrowRight, Check, X, ShieldCheck, Zap, Users2, Code2, Award, Sparkles, MessageCircle, Mail, Phone } from "lucide-react";
-import { analytics } from "../config";
+import React, { useMemo } from "react";
+import { ArrowRight, Check, Zap, ShieldCheck, Award, MessageCircle, Mail } from "lucide-react";
+import { useLanguage } from "../i18n/LanguageContext";
+import { getWhyDroppflowwContent } from "../data/pagesTranslations";
 
 interface WhyDroppflowwPageProps {
   onNavigate: (page: string) => void;
 }
 
-const COMPARISON = [
-  {
-    attribute: "Team Composition",
-    droppfloww: "Senior software engineers & systems architects directly on your project.",
-    traditional: "Senior partners sell the project; junior associates execute the code.",
-    genericSaas: "No custom team; you adapt your company to rigid off-the-shelf software.",
-  },
-  {
-    attribute: "Turnaround Time",
-    droppfloww: "Working prototype in 10 days. Production deployment in 4–6 weeks.",
-    traditional: "6–12 months of preliminary requirements gathering and slide decks.",
-    genericSaas: "Instant sign-up, but 6+ months of messy customization and plugin hacking.",
-  },
-  {
-    attribute: "Code & IP Ownership",
-    droppfloww: "100% full source code ownership. Clean TypeScript, standard cloud hosting.",
-    traditional: "Often proprietary framework lock-in with ongoing licensing fees.",
-    genericSaas: "Zero ownership. If you stop paying monthly, your tools and data vanish.",
-  },
-  {
-    attribute: "Integration Approach",
-    droppfloww: "Engineered specifically to connect your existing tools without rip-and-replace.",
-    traditional: "Typically demands ripping out your existing stack for a single $1M+ ERP.",
-    genericSaas: "Limited to supported marketplace plugins; custom edge cases unsupported.",
-  },
-  {
-    attribute: "Cost Structure",
-    droppfloww: "Transparent fixed-milestone pricing tied to tangible system deliverables.",
-    traditional: "Open-ended billable hourly rates that punish efficiency.",
-    genericSaas: "Per-seat recurring monthly pricing that penalizes company growth.",
-  },
-];
-
 export const WhyDroppflowwPage: React.FC<WhyDroppflowwPageProps> = ({ onNavigate }) => {
+  const { language } = useLanguage();
+  const content = useMemo(() => getWhyDroppflowwContent(language), [language]);
+
+  const cards = useMemo(() => {
+    if (language === "id") {
+      return [
+        {
+          title: "Tanpa Delegasi ke Staf Junior",
+          desc: "Agensi besar mengirim direktur terbaik untuk presentasi, lalu diam-diam menyerahkan arsitektur teknis Anda ke staf junior. Di Droppfloww, setiap baris kode dan skema database dikerjakan langsung oleh insinyur sistem berpengalaman.",
+          icon: Zap,
+        },
+        {
+          title: "Software yang Tahan Lama",
+          desc: "Kami menggunakan teknologi standar industri: TypeScript, Node.js, PostgreSQL, dan API REST/GraphQL yang bersih. Tanpa platform no-code aneh yang rentan rusak atau mengunci data Anda.",
+          icon: ShieldCheck,
+        },
+        {
+          title: "Keputusan Manusia Tetap Manusiawi",
+          desc: "Kami mengotomatiskan entri ulang data klerikal, sinkronisasi, dan ekstraksi berkas agar staf Anda dapat fokus pada relasi klien, negosiasi vendor, dan keputusan strategis penting.",
+          icon: Award,
+        },
+      ];
+    }
+    if (language === "zh") {
+      return [
+        {
+          title: "绝无初级外包分包",
+          desc: "大型外包公司派资深总监参与商务谈判，随后悄悄将技术架构甩给毫无实战经验的实习生。在 Droppfloww，每一行代码与数据库设计均由经验丰富的全栈系统工程师亲手编写。",
+          icon: Zap,
+        },
+        {
+          title: "历久弥坚的工业级技术栈",
+          desc: "我们采用主流高可用标准技术：TypeScript、Node.js、PostgreSQL 和规范的 REST API。拒绝任何在接口升级时随时崩溃、将业务数据当做人质的封闭低代码平台。",
+          icon: ShieldCheck,
+        },
+        {
+          title: "人机协同，技术赋能专家",
+          desc: "我们自动化消除机械数据录入、多端同步与单据抄写，让企业核心业务骨干将宝贵时间倾注于客户深度维系、供应商商务谈判及重大商业决策。",
+          icon: Award,
+        },
+      ];
+    }
+    if (language === "es") {
+      return [
+        {
+          title: "Sin Delegación en Perfiles Júnior",
+          desc: "Las grandes agencias envían a directores para la venta y luego derivan el proyecto a analistas sin experiencia. En Droppfloww, cada línea de código y esquema de datos es creado por ingenieros consolidados.",
+          icon: Zap,
+        },
+        {
+          title: "Software Construido para Perdurar",
+          desc: "Utilizamos estándares consolidados: TypeScript, Node.js, PostgreSQL y APIs REST limpias. Sin plataformas low-code cerradas que rompen al menor cambio o secuestran su información.",
+          icon: ShieldCheck,
+        },
+        {
+          title: "Decisiones Humanas con Criterio Propio",
+          desc: "Automatizamos la transcripción mecánica y sincronización para que su personal se centre en la negociación con proveedores, relación con clientes y decisiones estratégicas.",
+          icon: Award,
+        },
+      ];
+    }
+    return [
+      {
+        title: "No Junior Delegation",
+        desc: "Big agencies send their best directors to pitch you, then quietly hand off your technical architecture to unvetted junior staff. At Droppfloww, every line of code and database schema is crafted by experienced systems engineers.",
+        icon: Zap,
+      },
+      {
+        title: "Software Built to Outlast Us",
+        desc: "We use standard, enterprise-grade technologies: TypeScript, Node.js, PostgreSQL, and clean REST/GraphQL APIs. No weird proprietary low-code platforms that break when an API changes or hold your data hostage.",
+        icon: ShieldCheck,
+      },
+      {
+        title: "Human Decisions Stay Human",
+        desc: "We automate clerical re-entry, data synchronization, and document extraction so your people can focus on customer relationships, supplier negotiations, and complex strategic judgments.",
+        icon: Award,
+      },
+    ];
+  }, [language]);
+
   return (
     <div className="min-h-screen bg-[#F8FAFD] text-[#0B1728] selection:bg-[#EAF2F8] selection:text-[#0B1728]">
       {/* Editorial Header Section */}
@@ -57,15 +105,15 @@ export const WhyDroppflowwPage: React.FC<WhyDroppflowwPageProps> = ({ onNavigate
           <div className="max-w-[880px]">
             <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#0E1D31] border border-[#1B2F4A] text-[#93C5FD] text-[12px] sm:text-[13px] font-bold tracking-[0.14em] uppercase mb-8">
               <span className="w-2 h-2 rounded-full bg-[#38BDF8]" />
-              <span>Studio Philosophy & Advantage</span>
+              <span>{content.badge}</span>
             </div>
 
             <h1 className="text-[44px] sm:text-[64px] md:text-[80px] font-extrabold text-white tracking-[-0.035em] leading-[0.98] mb-8">
-              You work with the engineers who actually build your system.
+              {content.title}
             </h1>
 
             <p className="text-[19px] sm:text-[21px] md:text-[22px] leading-[1.7] text-[#CBDDEB] font-normal max-w-[68ch] mb-10">
-              Droppfloww is a boutique technology studio founded on a single conviction: growing companies don't need another generic SaaS subscription or an army of junior management consultants. They need serious custom operational software built by engineers who understand real business.
+              {content.desc}
             </p>
 
             <div className="flex flex-wrap items-center gap-4">
@@ -74,7 +122,7 @@ export const WhyDroppflowwPage: React.FC<WhyDroppflowwPageProps> = ({ onNavigate
                 onClick={() => onNavigate("schedule-demo")}
                 className="inline-flex items-center justify-center bg-[#617594] hover:bg-[#50637F] text-white text-[16px] font-bold px-8 py-4 rounded-full transition-all duration-200 shadow-[0_4px_16px_rgba(97,117,148,0.3)] hover:shadow-[0_6px_22px_rgba(97,117,148,0.4)] cursor-pointer"
               >
-                <span>Speak directly with our founder</span>
+                <span>{content.ctaSchedule}</span>
                 <ArrowRight className="w-4.5 h-4.5 ml-2" />
               </button>
 
@@ -83,7 +131,7 @@ export const WhyDroppflowwPage: React.FC<WhyDroppflowwPageProps> = ({ onNavigate
                 onClick={() => onNavigate("client-reviews")}
                 className="inline-flex items-center justify-center bg-[#0E1D31] hover:bg-[#152943] text-white text-[16px] font-semibold px-7 py-4 rounded-full border border-[#1B2F4A] transition-all cursor-pointer"
               >
-                <span>Read client reviews</span>
+                <span>{language === "id" ? "Baca ulasan klien" : language === "zh" ? "阅读客户评价" : language === "es" ? "Leer opiniones de clientes" : "Read client reviews"}</span>
               </button>
             </div>
           </div>
@@ -96,53 +144,32 @@ export const WhyDroppflowwPage: React.FC<WhyDroppflowwPageProps> = ({ onNavigate
           
           {/* Studio Principles Section */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-24">
-            
-            <div className="bg-white rounded-3xl p-8 sm:p-10 border border-[#CBDDEB] shadow-sm">
-              <div className="w-12 h-12 rounded-2xl bg-[#E7EDF5] flex items-center justify-center text-[#617594] font-bold mb-6">
-                <Zap className="w-6 h-6" />
-              </div>
-              <h3 className="text-[24px] font-extrabold text-[#0B1728] mb-3">
-                No Junior Delegation
-              </h3>
-              <p className="text-[16px] sm:text-[17px] leading-[1.75] text-[#2A3F5B] font-normal">
-                Big agencies send their best directors to pitch you, then quietly hand off your technical architecture to unvetted junior staff. At Droppfloww, every line of code and database schema is crafted by experienced systems engineers.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-3xl p-8 sm:p-10 border border-[#CBDDEB] shadow-sm">
-              <div className="w-12 h-12 rounded-2xl bg-[#E7EDF5] flex items-center justify-center text-[#617594] font-bold mb-6">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <h3 className="text-[24px] font-extrabold text-[#0B1728] mb-3">
-                Software Built to Outlast Us
-              </h3>
-              <p className="text-[16px] sm:text-[17px] leading-[1.75] text-[#2A3F5B] font-normal">
-                We use standard, enterprise-grade technologies: TypeScript, Node.js, PostgreSQL, and clean REST/GraphQL APIs. No weird proprietary low-code platforms that break when an API changes or hold your data hostage.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-3xl p-8 sm:p-10 border border-[#CBDDEB] shadow-sm">
-              <div className="w-12 h-12 rounded-2xl bg-[#E7EDF5] flex items-center justify-center text-[#617594] font-bold mb-6">
-                <Award className="w-6 h-6" />
-              </div>
-              <h3 className="text-[24px] font-extrabold text-[#0B1728] mb-3">
-                Human Decisions Stay Human
-              </h3>
-              <p className="text-[16px] sm:text-[17px] leading-[1.75] text-[#2A3F5B] font-normal">
-                We automate clerical re-entry, data synchronization, and document extraction so your people can focus on customer relationships, supplier negotiations, and complex strategic judgments.
-              </p>
-            </div>
-
+            {cards.map((card, idx) => {
+              const Icon = card.icon;
+              return (
+                <div key={idx} className="bg-white rounded-3xl p-8 sm:p-10 border border-[#CBDDEB] shadow-sm">
+                  <div className="w-12 h-12 rounded-2xl bg-[#E7EDF5] flex items-center justify-center text-[#617594] font-bold mb-6">
+                    <Icon className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-[24px] font-extrabold text-[#0B1728] mb-3">
+                    {card.title}
+                  </h3>
+                  <p className="text-[16px] sm:text-[17px] leading-[1.75] text-[#2A3F5B] font-normal">
+                    {card.desc}
+                  </p>
+                </div>
+              );
+            })}
           </div>
 
           {/* Detailed Comparison Table */}
           <div className="mb-24">
             <div className="max-w-[760px] mb-12">
               <h2 className="text-[36px] sm:text-[48px] font-extrabold text-[#0B1728] tracking-tight leading-[1.12] mb-4">
-                How Droppfloww compares.
+                {content.comparisonTitle}
               </h2>
               <p className="text-[19px] sm:text-[20px] text-[#1E2E42] font-normal leading-relaxed">
-                Why operational leaders choose our custom engineering studio over traditional alternatives.
+                {content.comparisonSubtitle}
               </p>
             </div>
 
@@ -152,21 +179,21 @@ export const WhyDroppflowwPage: React.FC<WhyDroppflowwPageProps> = ({ onNavigate
                   <thead>
                     <tr className="border-b border-[#CBDDEB] bg-[#F4F8FB]">
                       <th className="p-6 text-[15px] font-bold text-[#0B1728] w-1/4">
-                        Comparison Metric
+                        {language === "id" ? "Metrik Komparasi" : language === "zh" ? "核心评估维度" : language === "es" ? "Dimensión de Evaluación" : "Comparison Metric"}
                       </th>
                       <th className="p-6 text-[15px] font-extrabold text-[#617594] bg-[#E7EDF5] border-x border-[#CBDDEB] w-1/3">
-                        Droppfloww Systems
+                        {content.tableHeaderDroppfloww}
                       </th>
                       <th className="p-6 text-[15px] font-semibold text-[#52667A] w-1/5">
-                        Traditional Consultancies
+                        {content.tableHeaderTraditional}
                       </th>
                       <th className="p-6 text-[15px] font-semibold text-[#52667A] w-1/5">
-                        Generic Off-the-Shelf SaaS
+                        {content.tableHeaderSaas}
                       </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#CBDDEB]">
-                    {COMPARISON.map((row) => (
+                    {content.comparisons.map((row) => (
                       <tr key={row.attribute} className="hover:bg-[#FBFDFF] transition-colors">
                         <td className="p-6 text-[16px] font-bold text-[#0B1728]">
                           {row.attribute}
@@ -191,7 +218,7 @@ export const WhyDroppflowwPage: React.FC<WhyDroppflowwPageProps> = ({ onNavigate
             </div>
           </div>
 
-          {/* Founder Profile & Direct Line (Dark Navy Anchor) */}
+          {/* Founder Profile & Direct Line */}
           <div className="bg-[#0B1728] text-white rounded-3xl p-10 sm:p-16 border border-[#1B2F4A] mb-24">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
               
@@ -200,21 +227,21 @@ export const WhyDroppflowwPage: React.FC<WhyDroppflowwPageProps> = ({ onNavigate
                   <div className="w-20 h-20 rounded-full bg-[#1B2F4A] flex items-center justify-center text-[#93C5FD] font-extrabold text-[32px] mb-3">
                     K
                   </div>
-                  <div className="text-[20px] font-extrabold text-white">Kentley</div>
-                  <div className="text-[13px] text-[#93C5FD] font-medium mt-0.5">Founder & CEO</div>
+                  <div className="text-[20px] font-extrabold text-white">{content.founderName}</div>
+                  <div className="text-[13px] text-[#93C5FD] font-medium mt-0.5">{content.founderRole}</div>
                   <div className="text-[12px] text-[#CBDDEB] mt-2 font-mono">wongkentley@gmail.com</div>
                 </div>
               </div>
 
               <div className="lg:col-span-8">
                 <div className="text-[12px] font-bold text-[#38BDF8] uppercase tracking-[0.16em] mb-3">
-                  Leadership & Accountability
+                  {content.founderBadge}
                 </div>
                 <h3 className="text-[28px] sm:text-[40px] font-extrabold text-white tracking-tight leading-[1.15] mb-6">
-                  "We don't build software to sell equity. We build tools that make businesses run better."
+                  "{content.founderQuote}"
                 </h3>
                 <p className="text-[18px] sm:text-[19px] text-[#CBDDEB] leading-[1.8] font-normal mb-8">
-                  As Founder & CEO, I personally oversee technical architecture for every client engagement. When you schedule a walkthrough with Droppfloww, you speak directly with me—not a commission-incentivized business development rep. We take pride in craftsmanship, speed, and real operational longevity.
+                  {content.founderBio}
                 </p>
 
                 <div className="flex flex-wrap items-center gap-4">
@@ -244,10 +271,10 @@ export const WhyDroppflowwPage: React.FC<WhyDroppflowwPageProps> = ({ onNavigate
           {/* Bottom Conversion Invitation */}
           <div className="bg-white rounded-3xl p-10 sm:p-16 border border-[#CBDDEB] text-center shadow-sm">
             <h3 className="text-[34px] sm:text-[44px] font-extrabold text-[#0B1728] tracking-tight mb-4">
-              Let's evaluate your operational stack.
+              {content.bottomTitle}
             </h3>
             <p className="text-[18px] sm:text-[20px] text-[#1E2E42] font-normal max-w-[58ch] mx-auto mb-8 leading-relaxed">
-              No pressure, no hard sell. In 30 minutes, we will tell you honestly whether custom software can unlock meaningful operating leverage for your team.
+              {content.bottomDesc}
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <button
@@ -255,14 +282,14 @@ export const WhyDroppflowwPage: React.FC<WhyDroppflowwPageProps> = ({ onNavigate
                 onClick={() => onNavigate("schedule-demo")}
                 className="inline-flex items-center justify-center bg-[#617594] hover:bg-[#50637F] text-white text-[16px] font-bold px-9 py-4 rounded-full shadow-[0_4px_18px_rgba(97,117,148,0.35)] hover:shadow-[0_6px_24px_rgba(97,117,148,0.45)] transition-all cursor-pointer"
               >
-                Schedule an exploratory session
+                {content.bottomCta}
               </button>
               <button
                 type="button"
                 onClick={() => onNavigate("what-we-build")}
                 className="inline-flex items-center justify-center bg-white hover:bg-[#E7EDF5] text-[#617594] text-[16px] font-bold px-8 py-4 rounded-full border border-[#617594] transition-all cursor-pointer"
               >
-                Explore systems we build
+                {content.ctaHowWeWork}
               </button>
             </div>
           </div>

@@ -20,6 +20,7 @@ import { ClientReviewsPage } from "./pages/ClientReviewsPage";
 import { ScheduleDemoPage } from "./pages/ScheduleDemoPage";
 import { MessageSquare } from "lucide-react";
 import { analytics } from "./config";
+import { useLanguage } from "./i18n/LanguageContext";
 
 type PageId =
   | "overview"
@@ -44,6 +45,47 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState<PageId>("overview");
   const [reviewsDrawerOpen, setReviewsDrawerOpen] = useState<boolean>(false);
   const [verificationConsoleOpen, setVerificationConsoleOpen] = useState<boolean>(false);
+  const { language } = useLanguage();
+
+  const getPageTitle = (page: PageId): string => {
+    if (language === "id") {
+      const titles: Record<PageId, string> = {
+        overview: "Droppfloww Systems • Rekayasa Sistem Operasional Kustom",
+        "what-we-build": "Apa yang Kami Bangun • Droppfloww Systems",
+        "how-we-work": "Cara Kami Bekerja • Droppfloww Systems",
+        "why-droppfloww": "Mengapa Droppfloww • Droppfloww Systems",
+        "client-reviews": "Ulasan Klien & Studi Kasus • Droppfloww Systems",
+        "schedule-demo": "Jadwalkan Sesi Walkthrough • Droppfloww Systems",
+        privacy: "Pemberitahuan Privasi • Droppfloww Systems",
+      };
+      return titles[page] || titles.overview;
+    }
+    if (language === "zh") {
+      const titles: Record<PageId, string> = {
+        overview: "Droppfloww Systems • 定制化企业运营系统工程",
+        "what-we-build": "我们交付的系统 • Droppfloww Systems",
+        "how-we-work": "工程作业流程 • Droppfloww Systems",
+        "why-droppfloww": "为何选择 Droppfloww • Droppfloww Systems",
+        "client-reviews": "客户真实实测评价 • Droppfloww Systems",
+        "schedule-demo": "预约系统演示与咨询 • Droppfloww Systems",
+        privacy: "数据隐私条例 • Droppfloww Systems",
+      };
+      return titles[page] || titles.overview;
+    }
+    if (language === "es") {
+      const titles: Record<PageId, string> = {
+        overview: "Droppfloww Systems • Ingeniería Operativa a Medida",
+        "what-we-build": "Qué Construimos • Droppfloww Systems",
+        "how-we-work": "Cómo Trabajamos • Droppfloww Systems",
+        "why-droppfloww": "Por Qué Droppfloww • Droppfloww Systems",
+        "client-reviews": "Casos de Éxito de Clientes • Droppfloww Systems",
+        "schedule-demo": "Agendar Demostración • Droppfloww Systems",
+        privacy: "Aviso de Privacidad • Droppfloww Systems",
+      };
+      return titles[page] || titles.overview;
+    }
+    return PAGE_TITLES[page] || PAGE_TITLES.overview;
+  };
 
   // Sync with browser hash / location
   useEffect(() => {
@@ -54,10 +96,10 @@ export default function App() {
 
       if (target && target in PAGE_TITLES) {
         setCurrentPage(target);
-        document.title = PAGE_TITLES[target];
+        document.title = getPageTitle(target);
       } else {
         setCurrentPage("overview");
-        document.title = PAGE_TITLES.overview;
+        document.title = getPageTitle("overview");
       }
     };
 
@@ -68,12 +110,12 @@ export default function App() {
       window.removeEventListener("popstate", handleLocationChange);
       window.removeEventListener("hashchange", handleLocationChange);
     };
-  }, []);
+  }, [language]);
 
   const navigateToPage = (target: string) => {
     const validTarget = (target in PAGE_TITLES ? target : "overview") as PageId;
     setCurrentPage(validTarget);
-    document.title = PAGE_TITLES[validTarget];
+    document.title = getPageTitle(validTarget);
     window.history.pushState(null, "", validTarget === "overview" ? "/" : `#${validTarget}`);
     window.scrollTo({ top: 0, behavior: "instant" });
   };
@@ -169,7 +211,15 @@ export default function App() {
           aria-label="View Client Case Studies"
         >
           <MessageSquare className="w-4 h-4 text-[#617594]" />
-          <span>Client Reviews & Cases</span>
+          <span>
+            {language === "id"
+              ? "Ulasan & Kasus Klien"
+              : language === "zh"
+              ? "客户评价与实测"
+              : language === "es"
+              ? "Reseñas y Casos de Clientes"
+              : "Client Reviews & Cases"}
+          </span>
         </button>
       </aside>
 

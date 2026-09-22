@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { ArrowLeft, MessageCircle, Mail, Clock, ShieldCheck, CheckCircle2 } from "lucide-react";
 import { BookCallSection } from "../components/BookCallSection";
 import { DfLogo } from "../components/DfLogo";
+import { useLanguage } from "../i18n/LanguageContext";
+import { getScheduleDemoText } from "../data/pagesTranslations";
 
 interface ScheduleDemoPageProps {
   onNavigate: (page: string) => void;
 }
 
 export const ScheduleDemoPage: React.FC<ScheduleDemoPageProps> = ({ onNavigate }) => {
+  const { language } = useLanguage();
+  const text = useMemo(() => getScheduleDemoText(language), [language]);
+
   return (
     <div className="min-h-screen bg-[#F8FAFD] text-[#0B1728] selection:bg-[#EAF2F8] selection:text-[#0B1728]">
       {/* Editorial Header Section */}
@@ -31,37 +36,37 @@ export const ScheduleDemoPage: React.FC<ScheduleDemoPageProps> = ({ onNavigate }
               className="inline-flex items-center gap-2 text-[14px] font-bold text-[#8DB8E0] hover:text-white transition-colors cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>Back to Overview</span>
+              <span>{text.backToOverview}</span>
             </button>
           </div>
 
           <div className="max-w-[880px]">
             <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#0E1D31] border border-[#1B2F4A] text-[#93C5FD] text-[12px] sm:text-[13px] font-bold tracking-[0.14em] uppercase mb-6">
               <span className="w-2 h-2 rounded-full bg-emerald-400" />
-              <span>Direct Discovery & Engineering Scoping</span>
+              <span>{text.badge}</span>
             </div>
 
             <h1 className="text-[40px] sm:text-[56px] md:text-[72px] font-extrabold text-white tracking-[-0.035em] leading-[1.0] mb-6">
-              Schedule an operational walkthrough.
+              {text.title}
             </h1>
 
             <p className="text-[19px] sm:text-[21px] md:text-[22px] leading-[1.7] text-[#CBDDEB] font-normal max-w-[65ch] mb-8">
-              No sales pitches, no slide decks. You will speak directly with Founder & CEO Kentley to analyze your current operational bottlenecks, review existing software, and evaluate whether a custom system makes economic sense.
+              {text.desc}
             </p>
 
             {/* Reassurance Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-[#1B2F4A] text-[15px] sm:text-[16px] text-[#CBDDEB]">
               <div className="flex items-center gap-2.5">
                 <Clock className="w-4.5 h-4.5 text-[#38BDF8] shrink-0" />
-                <span>30-minute structured review</span>
+                <span>{text.point1}</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <ShieldCheck className="w-4.5 h-4.5 text-[#38BDF8] shrink-0" />
-                <span>Strict scope confidentiality</span>
+                <span>{text.point2}</span>
               </div>
               <div className="flex items-center gap-2.5">
                 <CheckCircle2 className="w-4.5 h-4.5 text-[#38BDF8] shrink-0" />
-                <span>Immediate technical assessment</span>
+                <span>{text.point3}</span>
               </div>
             </div>
           </div>
@@ -78,10 +83,10 @@ export const ScheduleDemoPage: React.FC<ScheduleDemoPageProps> = ({ onNavigate }
           {/* Alternative Direct Channels */}
           <div className="mt-16 pt-12 border-t border-[#CBDDEB] max-w-[800px] mx-auto text-center">
             <h3 className="text-[24px] font-extrabold text-[#0B1728] mb-3">
-              Need immediate assistance or have sensitive workflow files?
+              {text.helpTitle}
             </h3>
             <p className="text-[17px] sm:text-[18px] text-[#1E2E42] mb-8 font-normal leading-relaxed">
-              You can connect directly with our founder via WhatsApp or secure email.
+              {text.helpDesc}
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <a

@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { VerificationTestResult } from "../types";
 import { CheckCircle2, AlertTriangle, XCircle, Play, RefreshCw, X, ShieldAlert } from "lucide-react";
+import { useLanguage } from "../i18n/LanguageContext";
 
 interface VerificationConsoleProps {
   isOpen: boolean;
@@ -8,8 +9,62 @@ interface VerificationConsoleProps {
 }
 
 export const SystemVerificationConsole: React.FC<VerificationConsoleProps> = ({ isOpen, onClose }) => {
+  const { language } = useLanguage();
   const [results, setResults] = useState<VerificationTestResult[]>([]);
   const [isRunning, setIsRunning] = useState(false);
+
+  const uiText = useMemo(() => {
+    const map: Record<
+      string,
+      {
+        title: string;
+        desc: string;
+        info: string;
+        running: string;
+        rerun: string;
+        close: string;
+        closeAria: string;
+      }
+    > = {
+      en: {
+        title: "System Diagnostics",
+        desc: "Live API endpoint tests with direct verification logs.",
+        info: "Tests check schema validation, honeypot rejections, and downstream delivery state.",
+        running: "Running diagnostics...",
+        rerun: "Re-run tests",
+        close: "Close",
+        closeAria: "Close test console",
+      },
+      id: {
+        title: "Diagnostik Sistem",
+        desc: "Uji endpoint API langsung dengan log verifikasi real-time.",
+        info: "Pengujian memeriksa validasi skema data, proteksi honeypot anti-spam, dan status downstream.",
+        running: "Menjalankan diagnostik...",
+        rerun: "Jalankan ulang tes",
+        close: "Tutup",
+        closeAria: "Tutup konsol pengujian",
+      },
+      zh: {
+        title: "系统自检诊断台",
+        desc: "在线 API 接口实测与底层实时验证日志。",
+        info: "自动化测试验证数据架构校验、反爬虫陷阱拦截及下游分发连通性。",
+        running: "正在执行诊断...",
+        rerun: "重新运行自检",
+        close: "关闭",
+        closeAria: "关闭自检控制台",
+      },
+      es: {
+        title: "Diagnóstico del Sistema",
+        desc: "Pruebas directas de endpoints de API con registros de verificación.",
+        info: "Las pruebas verifican validación de esquemas, rechazos de honeypot y entrega downstream.",
+        running: "Ejecutando diagnóstico...",
+        rerun: "Reejecutar pruebas",
+        close: "Cerrar",
+        closeAria: "Cerrar consola de pruebas",
+      },
+    };
+    return map[language] || map.en;
+  }, [language]);
 
   const runAllTests = useCallback(async () => {
     setIsRunning(true);
@@ -267,11 +322,11 @@ export const SystemVerificationConsole: React.FC<VerificationConsoleProps> = ({ 
             <div className="flex items-center gap-2.5">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
               <h2 id="console-dialog-title" className="text-[20px] font-extrabold text-[#0B1728]">
-                System Diagnostics
+                {uiText.title}
               </h2>
             </div>
             <p className="text-[14px] text-[#475A70] mt-1 font-normal">
-              Live API endpoint tests with direct verification logs.
+              {uiText.desc}
             </p>
           </div>
 
@@ -279,7 +334,7 @@ export const SystemVerificationConsole: React.FC<VerificationConsoleProps> = ({ 
             type="button"
             onClick={onClose}
             className="p-2 text-[#52667A] hover:text-[#0B1728] rounded-full border border-[#CBDDEB] hover:bg-[#F8FAFD] cursor-pointer transition-colors"
-            aria-label="Close test console"
+            aria-label={uiText.closeAria}
           >
             <X className="w-5 h-5" />
           </button>
@@ -288,7 +343,7 @@ export const SystemVerificationConsole: React.FC<VerificationConsoleProps> = ({ 
         {/* Test List */}
         <div className="p-6 sm:p-7 overflow-y-auto space-y-4 flex-1">
           <div className="p-4 bg-[#F8FAFD] rounded-2xl border border-[#CBDDEB] text-[14px] text-[#475A70] leading-relaxed font-normal">
-            Tests check schema validation, honeypot rejections, and downstream delivery state.
+            {uiText.info}
           </div>
 
           {results.map((t) => (
@@ -334,12 +389,12 @@ export const SystemVerificationConsole: React.FC<VerificationConsoleProps> = ({ 
             {isRunning ? (
               <>
                 <RefreshCw className="w-4 h-4 animate-spin text-[#8DB8E0]" />
-                <span>Running diagnostics...</span>
+                <span>{uiText.running}</span>
               </>
             ) : (
               <>
                 <Play className="w-4 h-4 text-[#8DB8E0]" />
-                <span>Re-run tests</span>
+                <span>{uiText.rerun}</span>
               </>
             )}
           </button>
@@ -349,7 +404,7 @@ export const SystemVerificationConsole: React.FC<VerificationConsoleProps> = ({ 
             onClick={onClose}
             className="text-[14px] text-[#52667A] hover:text-[#0B1728] font-bold cursor-pointer transition-colors"
           >
-            Close
+            {uiText.close}
           </button>
         </div>
 

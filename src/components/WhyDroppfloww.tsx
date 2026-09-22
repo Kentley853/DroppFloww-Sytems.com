@@ -2,28 +2,54 @@ import React from "react";
 import { analytics } from "../config";
 import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
+import { useLanguage } from "../i18n/LanguageContext";
 
 interface WhyDroppflowwProps {
   onNavigate?: (page: string) => void;
 }
 
 export const WhyDroppfloww: React.FC<WhyDroppflowwProps> = ({ onNavigate }) => {
+  const { t, language } = useLanguage();
+
+  const reassuranceText: Record<string, string> = {
+    en: "No account managers, sales reps, or outsourced implementation chains. When you have a question about how your data moves, you speak directly with the engineers responsible for the system.",
+    id: "Tanpa perantara manajer akun, staf penjualan, atau rantai subkontraktor luar. Ketika Anda bertanya bagaimana data Anda diproses, Anda berdiskusi langsung dengan teknisi perekayasa sistem.",
+    zh: "没有层层推诿的客户经理、推销专员或外包中介。当您对数据流向或系统逻辑有任何疑问，您面对面沟通的直接就是构建系统的核心工程师。",
+    es: "Sin gestores de cuentas, representantes de ventas ni cadenas de implementación tercerizadas. Cuando tiene dudas sobre cómo se mueven sus datos, habla directamente con los ingenieros responsables del sistema.",
+  };
+
+  const principleLabel: Record<string, string> = {
+    en: "Principle",
+    id: "Prinsip",
+    zh: "核心准则",
+    es: "Principio",
+  };
+
   const principles = [
     {
       num: "01",
-      title: "Start with a specific problem.",
-      body: "We don't sell sweeping digital transformations that take eighteen months to show a result. We pick one painful, high-friction workflow—like document extraction or order queuing—and solve it first."
+      title: t("whyDroppfloww.p1Title", "Start with a specific problem."),
+      body: t(
+        "whyDroppfloww.p1Body",
+        "We don't sell sweeping digital transformations that take eighteen months to show a result. We pick one painful, high-friction workflow—like document extraction or order queuing—and solve it first."
+      ),
     },
     {
       num: "02",
-      title: "Keep useful tools.",
-      body: "If your team knows how to use their current spreadsheet or dispatch calendar, we build bridges instead of demanding you abandon software your staff already understands."
+      title: t("whyDroppfloww.p2Title", "Keep useful tools."),
+      body: t(
+        "whyDroppfloww.p2Body",
+        "If your team knows how to use their current spreadsheet or dispatch calendar, we build bridges instead of demanding you abandon software your staff already understands."
+      ),
     },
     {
       num: "03",
-      title: "Keep people in control.",
-      body: "Software and algorithms assist with classification, extraction and drafting. Critical business decisions, pricing estimates, and customer approvals always remain with your designated specialists."
-    }
+      title: t("whyDroppfloww.p3Title", "Keep people in control."),
+      body: t(
+        "whyDroppfloww.p3Body",
+        "Software and algorithms assist with classification, extraction and drafting. Critical business decisions, pricing estimates, and customer approvals always remain with your designated specialists."
+      ),
+    },
   ];
 
   return (
@@ -44,17 +70,17 @@ export const WhyDroppfloww: React.FC<WhyDroppflowwProps> = ({ onNavigate }) => {
         >
           <div className="mb-6">
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0E1D31] border border-[#1B2F4A] text-[12px] sm:text-[13px] font-bold text-[#93C5FD] uppercase tracking-[0.18em]">
-              <span>Direct Engineering Model</span>
+              <span>{t("whyDroppfloww.badge", "Direct Engineering Model")}</span>
             </span>
           </div>
           <h2
             id="why-heading"
             className="text-[44px] sm:text-[60px] lg:text-[76px] font-extrabold text-white tracking-[-0.035em] leading-[0.98] mb-6"
           >
-            You work with the people building it.
+            {t("whyDroppfloww.headline", "You work with the people building it.")}
           </h2>
           <p className="text-[19px] sm:text-[21px] md:text-[22px] leading-[1.7] text-[#CBDDEB] font-normal">
-            We keep the conversation close to the work. You bring the context. We help turn it into a practical system, explain the architectural choices, and work through every detail with your team.
+            {t("whyDroppfloww.lead", "We keep the conversation close to the work. You bring the context. We help turn it into a practical system, explain the architectural choices, and work through every detail with your team.")}
           </p>
         </motion.div>
 
@@ -73,13 +99,13 @@ export const WhyDroppfloww: React.FC<WhyDroppflowwProps> = ({ onNavigate }) => {
               className="bg-[#0E1E34] rounded-2xl p-7 sm:p-8 border border-[#1C3352] hover:border-[#617594] hover:shadow-[0_8px_24px_rgba(97,117,148,0.2)] transition-all duration-200 flex flex-col justify-between"
             >
               <div>
-                <span className="text-[12px] text-[#38BDF8] mb-4 font-bold tracking-[0.18em] uppercase block">
-                  Principle {pr.num}
+                <span className="text-[12px] text-[#93C5FD] mb-4 font-bold tracking-[0.18em] uppercase block">
+                  {principleLabel[language] || principleLabel.en} {pr.num}
                 </span>
                 <h3 className="text-[22px] sm:text-[24px] font-bold text-white mb-3.5 tracking-tight leading-snug">
                   {pr.title}
                 </h3>
-                <p className="text-[16px] sm:text-[17px] leading-[1.7] text-[#CBDDEB] font-normal">
+                <p className="text-[15px] sm:text-[16px] leading-[1.7] text-[#CBDDEB] font-normal">
                   {pr.body}
                 </p>
               </div>
@@ -97,7 +123,7 @@ export const WhyDroppfloww: React.FC<WhyDroppflowwProps> = ({ onNavigate }) => {
         >
           <div className="max-w-[78ch]">
             <p className="text-[16px] sm:text-[18px] text-[#E2E8F0] leading-[1.7] font-normal">
-              No account managers, sales reps, or outsourced implementation chains. When you have a question about how your data moves, you speak directly with the engineers responsible for the system.
+              {reassuranceText[language] || reassuranceText.en}
             </p>
           </div>
           <button
@@ -112,7 +138,7 @@ export const WhyDroppfloww: React.FC<WhyDroppflowwProps> = ({ onNavigate }) => {
             }}
             className="inline-flex items-center gap-2.5 bg-[#617594] hover:bg-[#50637F] text-white text-[16px] font-bold px-8 py-4 rounded-full shadow-[0_4px_16px_rgba(97,117,148,0.3)] hover:shadow-[0_6px_22px_rgba(97,117,148,0.4)] transition-all duration-200 hover:-translate-y-0.5 whitespace-nowrap cursor-pointer"
           >
-            <span>Speak with a builder</span>
+            <span>{t("whyDroppfloww.ctaSpeak", "Speak with a builder")}</span>
             <ArrowRight className="w-4.5 h-4.5 text-white" />
           </button>
         </motion.div>
@@ -121,3 +147,4 @@ export const WhyDroppfloww: React.FC<WhyDroppflowwProps> = ({ onNavigate }) => {
     </section>
   );
 };
+
